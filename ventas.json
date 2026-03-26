@@ -1,0 +1,35 @@
+[
+    {
+        "fecha": "2026/03/09 20:59:47",
+        "productos": [
+            {
+                "nombre": "mantequilla",
+                "precio": 16.0,
+                "cantidad": 2
+            }
+        ],
+        "total": 32.0
+    },
+    {
+        "fecha": "2026/03/25 20:40:46",
+        "productos": [
+            {
+                "nombre": "Pan de dulce",
+                "precio": 6,
+                "cantidad": 1
+            }
+        ],
+        "total": 6
+    },
+    {
+        "fecha": "2026/03/25 20:48:20",
+        "productos": [
+            {
+                "nombre": "Leche lala 1lt",
+                "precio": 35,
+                "cantidad": 1
+            }
+        ],
+        "total": 35
+    }
+]
