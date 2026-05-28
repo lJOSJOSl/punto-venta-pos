@@ -1,6 +1,42 @@
 [
-    {"nombre": "Coca cola 600ml", "precio":24},
-    {"nombre": "Pan de dulce", "precio":6},
-    {"nombre": "Leche lala 1lt", "precio":35},
-    {"nombre": "Principe de chocolate", "precio":24}
+    {
+        "nombre": "Coca cola 600ml",
+        "precio": 24
+    },
+    {
+        "nombre": "Pan de dulce",
+        "precio": 6
+    },
+    {
+        "nombre": "Leche lala 1lt",
+        "precio": 35
+    },
+    {
+        "nombre": "Principe de chocolate",
+        "precio": 24
+    },
+    {
+        "nombre": "Carlos V",
+        "precio": 12.0
+    },
+    {
+        "nombre": "coca cola 3 litros",
+        "precio": 51.0
+    },
+    {
+        "nombre": "Coca cola 355ml",
+        "precio": 15.0
+    },
+    {
+        "nombre": "Bubbalo",
+        "precio": 2.0
+    },
+    {
+        "nombre": "canels",
+        "precio": 2.0
+    },
+    {
+        "nombre": "Orbit 4s",
+        "precio": 3.0
+    }
 ]

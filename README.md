@@ -1,30 +1,25 @@
-## 📜  Sistema de punto de venta
+# 🛒 Sistema de Punto de Venta (POS)
 
-Aplicación desarrollada en python 
-que simula el funcionamiento
-basico de una caja registradora.
+Aplicación desarrollada en Python que simula el funcionamiento de una caja registradora.
 
-Permite registrar productos,
-calcular el total de la compra y
-generar un ticket de venta.
+## 🚀 Funcionalidades
 
+- Agregar productos desde catálogo
+- Carrito de compras
+- Cálculo automático de total
+- Generación de ticket
+- Almacenamiento de ventas en JSON
+- Historial de ventas
 
-## 🔧 Funcionalidades:
-- Agregar productos
-- Calcular total
-- Generar ticket
-- Guardar ventas en JSON
+## 🧱 Estructura
 
-## 📚 Etructura del proyecto:
+- main.py → Ejecuta el programa
+- caja.py → Lógica principal del sistema
+- producto.py → Clase de productos
+- productos.json → Catálogo
+- ventas.json → Historial de ventas
 
-- main.py → Archivo principal del programa  
-- producto.py → Clase para manejar productos  
-- utilidades.py → Funciones auxiliares  
-- ventas.json → Archivo donde se guardan las ventas  
-- ticket.txt → Archivo donde se genera el ticket
+## ▶️ Ejecución
 
-## 📡 Tecnologías utilizadas
-- Python
-
-
-
+```bash
+python main.py

@@ -31,5 +31,16 @@
             }
         ],
         "total": 35
+    },
+    {
+        "fecha": "2026/05/25 14:24:52",
+        "productos": [
+            {
+                "nombre": "Coca cola 600ml",
+                "precio": 24,
+                "cantidad": 2
+            }
+        ],
+        "total": 48
     }
 ]

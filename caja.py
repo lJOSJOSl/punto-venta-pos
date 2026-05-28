@@ -16,7 +16,7 @@ class Caja:
         except FileNotFoundError:
             return []
 
-    def agregar_producto(self):      # Agrega productos
+    def agregar_producto_carrito(self):      # Agrega productos
         self.mostrar_catalogo()
         
         if not self.productos:
@@ -34,6 +34,7 @@ class Caja:
         if not producto_encontrado:
             print("Producto no encontrado")
             return
+
 
         print(f'Producto: {producto_encontrado["nombre"]} - ${producto_encontrado["precio"]}')
 
@@ -55,7 +56,14 @@ class Caja:
         
         self.carrito.append(producto)
         print("Producto agregado")
+    
+    def agregar_producto_inventario(self, producto):
+        self.productos.append(producto)
 
+        with open("productos.json", "w") as archivo:
+            json.dump(self.productos, archivo, indent=4)
+
+        print("Producto agregado correctamente")
 
     def mostrar_carrito(self):        #	Muestra productos
         if not self.carrito:
@@ -175,3 +183,5 @@ class Caja:
             for p in v['productos']:
                 print(f"- {p['nombre']} x{p['cantidad']} ${p['precio']}")        
             print(f"Total: ${v['total']}")
+
+    
