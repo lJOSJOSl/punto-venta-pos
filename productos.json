@@ -7,5 +7,14 @@
         "precio_venta": 6.0,
         "precio_mayoreo": 0.0,
         "departamento": "Abarrotes"
+    },
+    {
+        "codigo_barras": "2",
+        "nombre": "pan de sal",
+        "tipo_venta": "unidad",
+        "precio_costo": 2.5,
+        "precio_venta": 3.0,
+        "precio_mayoreo": 0.0,
+        "departamento": "Abarrotes"
     }
 ]

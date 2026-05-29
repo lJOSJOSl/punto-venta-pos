@@ -6,15 +6,31 @@ caja = Caja()
 
 #funciones
 
-def mostrar_catalogo():
+def busqueda(event=None):
 
-    texto_catalogo.delete("1.0", tk.END)
+    for item in tabla_venta.get_children():
+        tabla_venta.delete(item)
+    
+    texto_busqueda = entrada_busqueda.get().lower()
 
     for producto in caja.productos:
 
-        texto_catalogo.insert(tk.END,
-            f'{producto.get("nombre", "Sin nombre"):<20} ${producto.get("precio_venta", 0)}\n'
-        )
+        nombre = producto.get("nombre", "").lower()
+
+        if texto_busqueda in nombre:
+
+            tabla_venta.insert(
+                "",
+                tk.END,
+                values=(
+                    producto.get("codigo_barras", ""),
+                    producto.get("nombre", ""),
+                    producto.get("precio_venta", 0),
+                    1,
+                    producto.get("precio_venta", 0),
+                    "N/A"
+                )
+            )
 
 def mostrar_ventas(event=None):
 
@@ -60,7 +76,7 @@ def agregar_producto():
         }
 
         caja.agregar_producto_inventario(producto)
-        mostrar_catalogo()
+        busqueda()
         mostrar_ventas()
     
         entrada_nombre.delete(0, tk.END)
@@ -113,23 +129,39 @@ titulo = tk.Label(
 
 titulo.pack(pady=20)
 
-boton = tk.Button(
+frame_busqueda = tk.Frame(frame_ventas)
+frame_busqueda.pack(pady=10)
+
+label_busqueda = tk.Label(frame_busqueda, text="Buscar producto:")
+label_busqueda.pack(side="left", padx=5)
+
+entrada_busqueda = tk.Entry(frame_busqueda, width=40, font=("Arial", 14))
+entrada_busqueda.pack(side="left")
+
+
+tabla_venta = ttk.Treeview(
     frame_ventas,
-    text = "Mostrar catálogo",
-    command = mostrar_catalogo
+    columns=("codigo", "descripcion", "precio", "cant", "import", "exist"),
+    show = "headings",
+    height = 15
 )
 
-boton.pack(pady=10)
 
-texto_catalogo = tk.Text(
-    frame_ventas,
-    height = 20,
-    width = 60,
-    font = ("Arial", 12)
+tabla_venta.heading("codigo", text="Codigo de barras")
+tabla_venta.heading("descripcion", text="Descripcion del producto")
+tabla_venta.heading("precio", text="Precio venta")
+tabla_venta.heading("cant", text="Cantidad")
+tabla_venta.heading("import", text="Importe")
+tabla_venta.heading("exist", text="Existencias")
 
-)
+tabla_venta.column("codigo", width=200)
+tabla_venta.column("descripcion", width=200)
+tabla_venta.column("precio", width=200)
+tabla_venta.column("cant", width=200)
+tabla_venta.column("import", width=200)
+tabla_venta.column("exist", width=200)
 
-texto_catalogo.pack(pady=20)
+tabla_venta.pack(pady=20)
 
 #pantalla productos
 
@@ -227,6 +259,8 @@ btn_agregar.pack()
 ventana.bind("<F1>", mostrar_ventas)
 
 ventana.bind("<F2>", mostrar_productos)
+
+ventana.bind("<F10>", busqueda)
 #mainloop
 
 ventana.mainloop()
