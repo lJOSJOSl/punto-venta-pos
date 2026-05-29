@@ -1,6 +1,7 @@
 from producto import Producto
 from datetime import datetime
 import json
+import os
 
 class Caja:
     def __init__(self):
@@ -10,11 +11,13 @@ class Caja:
         self.productos = self.cargar_productos()
 
     def cargar_productos(self):
-        try:
-            with open('productos.json', 'r') as f:
+        if not os.path.exists("productos.json"):
+            with open("productos.json", "w") as f:
+                json.dump([], f)
+
+        with open('productos.json', 'r') as f:
                 return json.load(f)
-        except FileNotFoundError:
-            return []
+
 
     def agregar_producto_carrito(self):      # Agrega productos
         self.mostrar_catalogo()

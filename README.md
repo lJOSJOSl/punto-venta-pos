@@ -23,3 +23,5 @@ Aplicación desarrollada en Python que simula el funcionamiento de una caja regi
 
 ```bash
 python main.py
+run interface:
+python interface.py

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from caja import Caja
 
 caja = Caja()
@@ -7,13 +8,12 @@ caja = Caja()
 
 def mostrar_catalogo():
 
-    texto.delete("1.0", tk.END)
+    texto_catalogo.delete("1.0", tk.END)
 
     for producto in caja.productos:
 
-        texto.insert(
-            tk.END,
-            f'{producto["nombre"]:<20} ${producto["precio"]}\n'
+        texto_catalogo.insert(tk.END,
+            f'{producto.get("nombre", "Sin nombre"):<20} ${producto.get("precio_venta", 0)}\n'
         )
 
 def mostrar_ventas(event=None):
@@ -30,20 +30,33 @@ def mostrar_productos(event=None):
 
 def agregar_producto():
 
-    nombre = entrada_codigo.get()
+    codigo = entrada_codigo.get()
 
     nombre = entrada_nombre.get()
 
+    venta = tipo_venta.get()
+
+    costo = entrada_costo.get()
+
     precio = entrada_precio.get()
+
+    mayoreo = entrada_mayoreo.get()
+
+    departamento = combo_departamento.get()
+
 
     if nombre == "" or precio == "":
         print("completa todos los campos")
         return
     try:
         producto = {
-            "codigo_barras": codigo_barras,
-            "nombre": nombre,
-            "precio": float(precio)
+            "codigo_barras" : codigo,
+            "nombre" : nombre,
+            "tipo_venta" : venta,
+            "precio_costo" : float(costo),
+            "precio_venta" : float(precio),
+            "precio_mayoreo" : float(mayoreo),
+            "departamento" : departamento
         }
 
         caja.agregar_producto_inventario(producto)
@@ -108,7 +121,7 @@ boton = tk.Button(
 
 boton.pack(pady=10)
 
-texto = tk.Text(
+texto_catalogo = tk.Text(
     frame_ventas,
     height = 20,
     width = 60,
@@ -116,7 +129,7 @@ texto = tk.Text(
 
 )
 
-texto.pack(pady=20)
+texto_catalogo.pack(pady=20)
 
 #pantalla productos
 
@@ -145,6 +158,25 @@ label_nombre.pack(side="left", padx=5)
 entrada_nombre = tk.Entry(frame_nombre, width=40)
 entrada_nombre.pack(side="left")
 
+frame_tipo = tk.Frame(frame_productos)
+frame_tipo.pack(pady=5)
+
+label_tipo = tk.Label(frame_tipo, text="Se vende")
+label_tipo.pack(side="left")
+tipo_venta = tk.StringVar()
+
+tipo_venta.set("unidad")
+
+radio_unidad = tk.Radiobutton(frame_tipo, text="Por unidad/pza", variable=tipo_venta, value="unidad")
+
+radio_granel = tk.Radiobutton(frame_tipo, text="A granel(usa decimales)", variable=tipo_venta, value="granel")
+
+radio_kit = tk.Radiobutton(frame_tipo, text="Como paquete(Kit)", variable=tipo_venta, value="kit")
+
+radio_unidad.pack(side="left")
+radio_granel.pack(side="left")
+radio_kit.pack(side="left")
+
 frame_costo = tk.Frame(frame_productos)
 frame_costo.pack(pady=5)
 
@@ -158,13 +190,30 @@ entrada_costo.pack(side="left")
 frame_precio = tk.Frame(frame_productos)
 frame_precio.pack(pady=5)
 
-label_precio = tk.Label(frame_precio, text="Precio")
+label_precio = tk.Label(frame_precio, text="Precio venta")
 label_precio.pack(side="left", padx=5)
 
 entrada_precio = tk.Entry(frame_precio, width=5)
 entrada_precio.pack(side="left")
 
+frame_mayoreo = tk.Frame(frame_productos)
+frame_mayoreo.pack(pady=5)
 
+label_mayoreo = tk.Label(frame_mayoreo, text="Precio mayoreo")
+label_mayoreo.pack(side="left", padx=5)
+
+entrada_mayoreo = tk.Entry(frame_mayoreo, width=5)
+entrada_mayoreo.pack(side="left")
+
+frame_departamento = tk.Frame(frame_productos)
+frame_departamento.pack(pady=5)
+
+label_departamento = tk.Label(frame_departamento, text="Departamento")
+label_departamento.pack(side="left")
+
+combo_departamento = ttk.Combobox(frame_departamento, values=["Abarrotes","Bimbo","Lala", "Coca cola"])
+combo_departamento.set("Abarrotes")
+combo_departamento.pack(side="left")
 
 
 btn_agregar = tk.Button(
