@@ -22,13 +22,13 @@ Aplicación desarrollada en Python que simula el funcionamiento de una caja regi
 ## 📸 Capturas del sistema
 
 ### Pantalla principal
-![Pantalla principal](images/Frame_venta.png)
+![Pantalla principal](imagenes/Frame_venta.png)
 
 ### Pantalla busqueda de productos
-![Pantalla busqueda f10](images/Frame_busqueda.png)
+![Pantalla busqueda f10](imagenes/Frame_busqueda.png)
 
 ### Pantalla productos agregar un nuevo producto
-![Pantalla productos](images/Frame_productos.png)
+![Pantalla productos](imagenes/Frame_productos.png)
 
 ## ▶️ Ejecución
 
