@@ -1,48 +1,14 @@
+# -----------------Importaciones-----------------
+
 import tkinter as tk
 from tkinter import ttk
 from caja import Caja
 
+# -----------------Objetos globales-----------------
+
 caja = Caja()
 
-#funciones
-
-def busqueda(event=None):
-
-    for item in tabla_venta.get_children():
-        tabla_venta.delete(item)
-    
-    texto_busqueda = entrada_busqueda.get().lower()
-
-    for producto in caja.productos:
-
-        nombre = producto.get("nombre", "").lower()
-
-        if texto_busqueda in nombre:
-
-            tabla_venta.insert(
-                "",
-                tk.END,
-                values=(
-                    producto.get("codigo_barras", ""),
-                    producto.get("nombre", ""),
-                    producto.get("precio_venta", 0),
-                    1,
-                    producto.get("precio_venta", 0),
-                    "N/A"
-                )
-            )
-
-def mostrar_ventas(event=None):
-
-    frame_productos.pack_forget()
-
-    frame_ventas.pack(fill="both", expand=True)
-
-def mostrar_productos(event=None):
-    
-    frame_ventas.pack_forget()
-
-    frame_productos.pack(fill="both", expand=True)
+# -----------------Funciones-----------------
 
 def agregar_producto():
 
@@ -86,16 +52,226 @@ def agregar_producto():
     except ValueError:
         print("El precio debe ser un numero")
 
-#Ventanas
+def agregar_al_carrito(event=None):
+
+    codigo = entrada_codigo_venta.get()
+
+    for producto in caja.productos:
+        if producto.get("codigo_barras") == codigo:
+
+            tabla_venta.insert("", 
+                        tk.END, 
+                        values=(
+                        producto.get("codigo_barras",""),
+                        producto.get("nombre", ""),
+                        producto.get("precio_venta", 0),
+                        1,
+                        producto.get("precio_venta", 0),
+                        "N/A"
+                               )
+                        )
+def mostrar_ventas():
+
+    frame_productos.grid_forget()
+
+    frame_ventas.grid(row=1, column=0, sticky="nsew")
+
+def mostrar_productos():
+
+    frame_ventas.grid_forget()
+
+    frame_productos.grid(row=1, column=0, sticky="nsew")
+
+def abrir_busqueda(event=None):
+
+    ventana_busqueda = tk.Toplevel(ventana)
+    
+    ventana_busqueda.title("Busqueda de Productos")
+
+    ventana_busqueda.geometry("700x500")
+
+    tabla = ttk.Treeview(
+        ventana_busqueda,
+        columns=("nombre", "precio_venta","departamento"),
+        show="headings"
+    )
+# ---ENCABEZADOS---
+
+    tabla.heading("nombre", text="Producto")
+    tabla.heading("precio_venta", text="Precio")
+    tabla.heading("departamento", text="Departamento")
+
+# ---Ancho de columnas---
+
+    tabla.column("nombre", width=300)
+    tabla.column("precio_venta", width=100)
+    tabla.column("departamento", width=150)
+   
+
+    entrada = tk.Entry(
+        ventana_busqueda,
+        font=("Arial", 16),
+        width=40
+    )
+
+    entrada.grid(pady=10)
+
+    tabla.pack(fill="both", expand=True)
+
+    def buscar(event=None):
+    
+        tabla.delete(*tabla.get_children())
+
+        texto = entrada.get().lower()
+
+        for producto in caja.productos:
+
+            nombre = producto.get("nombre", "").lower()
+
+            if texto in nombre:
+
+                tabla.insert(
+                     "",
+                     tk.END,
+                     values=(
+                         producto.get("nombre", ""),
+                         producto.get("precio_venta", 0),
+                         producto.get("departamento", "")
+                     )
+                )
+
+    entrada.bind("<KeyRelease>", buscar)
+
+    def seleccionar(event=None):
+        
+        item = tabla.focus()
+
+        if not item:
+            return
+
+        valores = tabla.item(item, "values")
+
+        tabla_venta.insert(
+            "",
+            tk.END,
+            values=(
+                "",
+                valores[0],
+                valores[1],
+                1,
+                valores[1],
+            )
+        )
+
+        ventana_busqueda.destroy()
+    
+    tabla.bind("<Return>", seleccionar)
+
+
+ 
+#-----------------Ventanas-----------------
+
+# ---VENTANA PRINCIPAL---
 
 ventana = tk.Tk()
 
 ventana.title("Punto de venta")
 ventana.geometry("800x600")
 
-barra_superior = tk.Frame(ventana)
+ventana.grid_rowconfigure(1, weight=1)
+ventana.grid_columnconfigure(0, weight=1)
 
-barra_superior.pack(fill="x")
+#-------------barra superior-------------
+
+barra_superior = tk.Frame(ventana)
+barra_superior.grid(row=0, column=0, sticky="ew")
+
+#-----------------Frames-----------------
+
+
+# --- F1 Ventas ---
+
+frame_ventas = tk.Frame(ventana)
+frame_ventas.grid(row=1, column=0, sticky="nsew")
+
+# --- Expansion interna ---
+
+frame_ventas.grid_rowconfigure(3, weight=1)
+frame_ventas.grid_columnconfigure(0, weight=1)
+
+# --- Titulo ---
+
+titulo_ventas = tk.Label(frame_ventas, text="F1 : Ventas", font=("Arial", 24))
+titulo_ventas.grid(row=0, column=0, pady=10)
+
+# --- Captura codigo ---
+
+frame_codigo_venta = tk.Frame(frame_ventas)
+frame_codigo_venta.grid(row=1, column=0, sticky="nsew")
+
+label_codigo_venta = tk.Label(frame_codigo_venta, text= "Codigo del Producto:")
+label_codigo_venta.pack(side="left", padx=5)
+
+entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18))
+entrada_codigo_venta.pack(side="left")
+
+entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
+
+# --- Busqueda ---
+
+frame_busqueda = tk.Frame(frame_ventas)
+frame_busqueda.grid(row=2, column=0, sticky="ew", padx=10)
+
+label_busqueda = tk.Label(frame_busqueda, text="Buscar producto:")
+label_busqueda.pack(side="left", padx=5)
+
+entrada_busqueda = tk.Entry(frame_busqueda, width=40, font=("Arial", 14))
+entrada_busqueda.pack(side="left")
+
+# !--- Tabla carrito en F1 ---!
+
+tabla_venta = ttk.Treeview(
+    frame_ventas,
+    columns =(
+        "codigo",
+        "descripcion",
+        "precio",
+        "cantidad",
+        "importe"
+        ),
+        show="headings",
+    )
+
+# !---Encabezados---!
+
+tabla_venta.heading("codigo", text="Codigo")
+tabla_venta.heading("descripcion", text="Descripción")
+tabla_venta.heading("precio", text="Precio")
+tabla_venta.heading("cantidad", text="Cantidad")
+tabla_venta.heading("importe", text="Importe")
+
+# !---Ancho de columnas---!
+
+tabla_venta.column("codigo", width=150)
+tabla_venta.column("descripcion", width=300)
+tabla_venta.column("precio", width=100)
+tabla_venta.column("cantidad", width=80)
+tabla_venta.column("importe", width=100)
+
+# --- Mostrar tabla ---
+
+tabla_venta.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
+
+# !--- Frame total inferior ---!
+
+frame_total = tk.Frame(frame_ventas)
+frame_total.grid(row=4, column=0, sticky="ew")
+
+label_total = tk.Label(frame_total, text="TOTAL: $0.00", font=("Arial", 22, "bold"))
+
+label_total.pack(side="right", padx=20, pady=10)
+
+#-----------------pantalla ventas-----------------
 
 btn_ventas = tk.Button(
     barra_superior,
@@ -111,59 +287,10 @@ btn_productos = tk.Button(
 )
 btn_productos.pack(side="left", padx=10, pady=10)
 
-#Frames
 
-frame_ventas = tk.Frame(ventana)
+#-----------------pantalla productos-----------------
 
 frame_productos = tk.Frame(ventana)
-
-frame_ventas.pack(fill="both", expand=True)
-
-#pantalla ventas
-
-titulo = tk.Label(
-    frame_ventas,
-    text="F1 : Ventas",
-    font=("Arial", 24)
-)
-
-titulo.pack(pady=20)
-
-frame_busqueda = tk.Frame(frame_ventas)
-frame_busqueda.pack(pady=10)
-
-label_busqueda = tk.Label(frame_busqueda, text="Buscar producto:")
-label_busqueda.pack(side="left", padx=5)
-
-entrada_busqueda = tk.Entry(frame_busqueda, width=40, font=("Arial", 14))
-entrada_busqueda.pack(side="left")
-
-
-tabla_venta = ttk.Treeview(
-    frame_ventas,
-    columns=("codigo", "descripcion", "precio", "cant", "import", "exist"),
-    show = "headings",
-    height = 15
-)
-
-
-tabla_venta.heading("codigo", text="Codigo de barras")
-tabla_venta.heading("descripcion", text="Descripcion del producto")
-tabla_venta.heading("precio", text="Precio venta")
-tabla_venta.heading("cant", text="Cantidad")
-tabla_venta.heading("import", text="Importe")
-tabla_venta.heading("exist", text="Existencias")
-
-tabla_venta.column("codigo", width=200)
-tabla_venta.column("descripcion", width=200)
-tabla_venta.column("precio", width=200)
-tabla_venta.column("cant", width=200)
-tabla_venta.column("import", width=200)
-tabla_venta.column("exist", width=200)
-
-tabla_venta.pack(pady=20)
-
-#pantalla productos
 
 titulo_productos = tk.Label(
     frame_productos,
@@ -195,6 +322,7 @@ frame_tipo.pack(pady=5)
 
 label_tipo = tk.Label(frame_tipo, text="Se vende")
 label_tipo.pack(side="left")
+
 tipo_venta = tk.StringVar()
 
 tipo_venta.set("unidad")
@@ -217,7 +345,6 @@ label_costo.pack(side="left", padx=5)
 
 entrada_costo = tk.Entry(frame_costo, width=5)
 entrada_costo.pack(side="left")
-
 
 frame_precio = tk.Frame(frame_productos)
 frame_precio.pack(pady=5)
@@ -260,7 +387,7 @@ ventana.bind("<F1>", mostrar_ventas)
 
 ventana.bind("<F2>", mostrar_productos)
 
-ventana.bind("<F10>", busqueda)
-#mainloop
+ventana.bind("<F10>", abrir_busqueda)
 
+#Mainloop
 ventana.mainloop()
