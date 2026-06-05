@@ -13,19 +13,12 @@ caja = Caja()
 def agregar_producto():
 
     codigo = entrada_codigo.get()
-
     nombre = entrada_nombre.get()
-
     venta = tipo_venta.get()
-
     costo = entrada_costo.get()
-
     precio = entrada_precio.get()
-
     mayoreo = entrada_mayoreo.get()
-
     departamento = combo_departamento.get()
-
 
     if nombre == "" or precio == "":
         print("completa todos los campos")
@@ -73,21 +66,17 @@ def agregar_al_carrito(event=None):
 def mostrar_ventas():
 
     frame_productos.grid_forget()
-
     frame_ventas.grid(row=1, column=0, sticky="nsew")
 
 def mostrar_productos():
 
     frame_ventas.grid_forget()
-
     frame_productos.grid(row=1, column=0, sticky="nsew")
 
 def abrir_busqueda(event=None):
 
     ventana_busqueda = tk.Toplevel(ventana)
-    
     ventana_busqueda.title("Busqueda de Productos")
-
     ventana_busqueda.geometry("700x500")
 
     tabla = ttk.Treeview(
@@ -95,6 +84,8 @@ def abrir_busqueda(event=None):
         columns=("nombre", "precio_venta","departamento"),
         show="headings"
     )
+
+    
 # ---ENCABEZADOS---
 
     tabla.heading("nombre", text="Producto")
@@ -107,28 +98,30 @@ def abrir_busqueda(event=None):
     tabla.column("precio_venta", width=100)
     tabla.column("departamento", width=150)
    
-
     entrada = tk.Entry(
         ventana_busqueda,
         font=("Arial", 16),
         width=40
     )
 
-    entrada.grid(pady=10)
-
+    entrada.pack(pady=10)
     tabla.pack(fill="both", expand=True)
+    
+    print("Productos en caja:", caja.productos)
 
     def buscar(event=None):
     
         tabla.delete(*tabla.get_children())
 
-        texto = entrada.get().lower()
+        texto = entrada.get().strip().lower()
+        
+        print("Buscando:", texto)#Debug
 
         for producto in caja.productos:
 
             nombre = producto.get("nombre", "").lower()
 
-            if texto in nombre:
+            if texto == "" or texto in nombre:
 
                 tabla.insert(
                      "",
@@ -167,8 +160,9 @@ def abrir_busqueda(event=None):
     
     tabla.bind("<Return>", seleccionar)
 
+    entrada.focus_set()
 
- 
+
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---
@@ -187,8 +181,6 @@ barra_superior = tk.Frame(ventana)
 barra_superior.grid(row=0, column=0, sticky="ew")
 
 #-----------------Frames-----------------
-
-
 # --- F1 Ventas ---
 
 frame_ventas = tk.Frame(ventana)
@@ -196,7 +188,7 @@ frame_ventas.grid(row=1, column=0, sticky="nsew")
 
 # --- Expansion interna ---
 
-frame_ventas.grid_rowconfigure(3, weight=1)
+frame_ventas.grid_rowconfigure(2, weight=1)
 frame_ventas.grid_columnconfigure(0, weight=1)
 
 # --- Titulo ---
@@ -217,16 +209,6 @@ entrada_codigo_venta.pack(side="left")
 
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
 
-# --- Busqueda ---
-
-frame_busqueda = tk.Frame(frame_ventas)
-frame_busqueda.grid(row=2, column=0, sticky="ew", padx=10)
-
-label_busqueda = tk.Label(frame_busqueda, text="Buscar producto:")
-label_busqueda.pack(side="left", padx=5)
-
-entrada_busqueda = tk.Entry(frame_busqueda, width=40, font=("Arial", 14))
-entrada_busqueda.pack(side="left")
 
 # !--- Tabla carrito en F1 ---!
 
@@ -260,7 +242,7 @@ tabla_venta.column("importe", width=100)
 
 # --- Mostrar tabla ---
 
-tabla_venta.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
+tabla_venta.grid(row=2, column=0, sticky="nsew", padx=10, pady=10)
 
 # !--- Frame total inferior ---!
 
@@ -268,7 +250,6 @@ frame_total = tk.Frame(frame_ventas)
 frame_total.grid(row=4, column=0, sticky="ew")
 
 label_total = tk.Label(frame_total, text="TOTAL: $0.00", font=("Arial", 22, "bold"))
-
 label_total.pack(side="right", padx=20, pady=10)
 
 #-----------------pantalla ventas-----------------
@@ -328,9 +309,7 @@ tipo_venta = tk.StringVar()
 tipo_venta.set("unidad")
 
 radio_unidad = tk.Radiobutton(frame_tipo, text="Por unidad/pza", variable=tipo_venta, value="unidad")
-
 radio_granel = tk.Radiobutton(frame_tipo, text="A granel(usa decimales)", variable=tipo_venta, value="granel")
-
 radio_kit = tk.Radiobutton(frame_tipo, text="Como paquete(Kit)", variable=tipo_venta, value="kit")
 
 radio_unidad.pack(side="left")
@@ -374,7 +353,6 @@ combo_departamento = ttk.Combobox(frame_departamento, values=["Abarrotes","Bimbo
 combo_departamento.set("Abarrotes")
 combo_departamento.pack(side="left")
 
-
 btn_agregar = tk.Button(
     frame_productos,
     text= "Agregar producto",
@@ -383,10 +361,9 @@ btn_agregar = tk.Button(
 btn_agregar.pack()
 
 #teclas
+
 ventana.bind("<F1>", mostrar_ventas)
-
 ventana.bind("<F2>", mostrar_productos)
-
 ventana.bind("<F10>", abrir_busqueda)
 
 #Mainloop

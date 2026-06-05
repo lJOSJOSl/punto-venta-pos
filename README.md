@@ -19,9 +19,20 @@ Aplicación desarrollada en Python que simula el funcionamiento de una caja regi
 - productos.json → Catálogo
 - ventas.json → Historial de ventas
 
+## 📸 Capturas del sistema
+
+### Pantalla principal
+![Pantalla principal](images/Frame_venta.png)
+
+### Pantalla busqueda de productos
+![Pantalla busqueda f10](images/Frame_busqueda.png)
+
+### Pantalla productos agregar un nuevo producto
+![Pantalla productos](images/Frame_prodcuctos.png)
+
 ## ▶️ Ejecución
 
 ```bash
-python main.py
+
 run interface:
-python interface.py
+python interfaz.py
