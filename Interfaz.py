@@ -63,12 +63,12 @@ def agregar_al_carrito(event=None):
                         "N/A"
                                )
                         )
-def mostrar_ventas():
+def mostrar_ventas(event=None):
 
     frame_productos.grid_forget()
     frame_ventas.grid(row=1, column=0, sticky="nsew")
 
-def mostrar_productos():
+def mostrar_productos(event=None):
 
     frame_ventas.grid_forget()
     frame_productos.grid(row=1, column=0, sticky="nsew")
@@ -175,16 +175,43 @@ ventana.geometry("800x600")
 ventana.grid_rowconfigure(1, weight=1)
 ventana.grid_columnconfigure(0, weight=1)
 
-#-------------barra superior-------------
+#-------------Frame superior-------------
 
-barra_superior = tk.Frame(ventana)
-barra_superior.grid(row=0, column=0, sticky="ew")
+frame_header = tk.Frame(ventana, height=80, relief="ridge", bd=2)
+frame_header.grid(row=0, column=0, sticky="ew")
+
+# --- Logo ---
+
+label_logo = tk.Label(frame_header, text="LOGO", width=10)
+label_logo.grid(row=0, column=0, rowspan=2, padx=10)
+
+# --- Giro ---
+
+label_giro = tk.Label(frame_header, text="Giro", font=("Arial", 18, "bold"))
+label_giro.grid(row=0, column=1, sticky="w")
+
+# --- Nombre negocio ---
+
+label_nombre = tk.Label(frame_header, text="Nombre", font=("Arial", 18, "bold"))
+label_nombre.grid(row=1, column=1, sticky="w")
+
+frame_header.columnconfigure(1, weight=1)
+
+# --- Boton usuario ---
+
+btn_usuario = tk.Button(frame_header, text="usuario", width=3)
+btn_usuario.grid(row=1, column=2, rowspan=2, padx=10)
+
+#-------------barra botones/funciones-------------
+
+barra_funciones = tk.Frame(ventana)
+barra_funciones.grid(row=1, column=0, sticky="ew")
 
 #-----------------Frames-----------------
 # --- F1 Ventas ---
 
 frame_ventas = tk.Frame(ventana)
-frame_ventas.grid(row=1, column=0, sticky="nsew")
+frame_ventas.grid(row=2, column=0, sticky="nsew")
 
 # --- Expansion interna ---
 
@@ -255,14 +282,14 @@ label_total.pack(side="right", padx=20, pady=10)
 #-----------------pantalla ventas-----------------
 
 btn_ventas = tk.Button(
-    barra_superior,
+    barra_funciones,
     text="F1 Ventas",
     command=mostrar_ventas
 )
 btn_ventas.pack(side="left", padx=10, pady=10)
 
 btn_productos = tk.Button(
-    barra_superior,
+    barra_funciones,
     text="F2 Productos",
     command=mostrar_productos
 )
