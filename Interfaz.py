@@ -174,7 +174,7 @@ ventana = tk.Tk()
 ventana.title("Punto de venta")
 ventana.geometry("800x600")
 
-ventana.grid_rowconfigure(2, weight=1)
+ventana.grid_rowconfigure(3, weight=1)
 ventana.grid_columnconfigure(0, weight=1)
 
 #-------------Frame superior-------------
@@ -202,7 +202,7 @@ frame_header.columnconfigure(1, weight=1)
 # --- Boton usuario ---
 
 btn_usuario = tk.Button(frame_header, text="usuario", width=8)
-btn_usuario.grid(row=0, column=2, rowspan=8, padx=10)
+btn_usuario.grid(row=0, column=2, rowspan=2, padx=10)
 
 #-------------barra botones/funciones-------------
 
@@ -228,7 +228,7 @@ titulo_ventas.grid(row=0, column=0, sticky="w", pady=10)
 # --- Captura codigo ---
 
 frame_codigo_venta = tk.Frame(frame_ventas)
-frame_codigo_venta.grid(row=1, column=0, sticky="nsew")
+frame_codigo_venta.grid(row=1, column=0, sticky="nsew", pady=(2,2))
 
 label_codigo_venta = tk.Label(frame_codigo_venta, text= "Codigo del Producto:")
 label_codigo_venta.pack(side="left", padx=5)
@@ -236,10 +236,32 @@ label_codigo_venta.pack(side="left", padx=5)
 entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18))
 entrada_codigo_venta.pack(side="left")
 
-btn_enter = tk.Button(frame_codigo_venta, text= "Enter - agregar producto", command=agregar_al_carrito)
+btn_enter = tk.Button(frame_codigo_venta, text="Enter - agregar producto", command=agregar_al_carrito)
 btn_enter.pack(side="left")
 
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
+
+frame_codigo_venta.columnconfigure(0, weight=1)
+
+# --- Botones para venta ---
+
+frame_botones_ventas = tk.Frame(frame_ventas)
+frame_botones_ventas.grid(row=2, column=0, sticky="w", pady=(2,2))
+
+btn_venta_rapida = tk.Button(frame_botones_ventas, text="CTRL+P VR",)
+btn_venta_rapida.pack(side="left")
+
+btn_buscar = tk.Button(frame_botones_ventas, text="F10: Buscar", command=abrir_busqueda)
+btn_buscar.pack(side="left")
+
+btn_entradas = tk.Button(frame_botones_ventas, text="F4 Entradas")
+btn_entradas.pack(side="left")
+
+btn_salidas = tk.Button(frame_botones_ventas, text="F5 Salidas")
+btn_salidas.pack(side="left")
+
+btn_borrar_articulo = tk.Button(frame_botones_ventas, text="Borrar Articulo")
+btn_borrar_articulo.pack(side="left")
 
 
 # !--- Tabla carrito en F1 ---!
@@ -274,7 +296,7 @@ tabla_venta.column("importe", width=100)
 
 # --- Mostrar tabla ---
 
-tabla_venta.grid(row=2, column=0, sticky="nsew", padx=10, pady=10)
+tabla_venta.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
 
 # !--- Frame total inferior ---!
 
