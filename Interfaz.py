@@ -63,15 +63,17 @@ def agregar_al_carrito(event=None):
                         "N/A"
                                )
                         )
+
+
 def mostrar_ventas(event=None):
 
     frame_productos.grid_forget()
-    frame_ventas.grid(row=1, column=0, sticky="nsew")
+    frame_ventas.grid(row=2, column=0, sticky="nsew")
 
 def mostrar_productos(event=None):
 
     frame_ventas.grid_forget()
-    frame_productos.grid(row=1, column=0, sticky="nsew")
+    frame_productos.grid(row=2, column=0, sticky="nsew")
 
 def abrir_busqueda(event=None):
 
@@ -172,13 +174,13 @@ ventana = tk.Tk()
 ventana.title("Punto de venta")
 ventana.geometry("800x600")
 
-ventana.grid_rowconfigure(1, weight=1)
+ventana.grid_rowconfigure(2, weight=1)
 ventana.grid_columnconfigure(0, weight=1)
 
 #-------------Frame superior-------------
 
-frame_header = tk.Frame(ventana, height=80, relief="ridge", bd=2)
-frame_header.grid(row=0, column=0, sticky="ew")
+frame_header = tk.Frame(ventana, height=40, relief="ridge", bd=2)
+frame_header.grid(row=0, column=0, sticky="ew", pady=(0,2))
 
 # --- Logo ---
 
@@ -187,24 +189,24 @@ label_logo.grid(row=0, column=0, rowspan=2, padx=10)
 
 # --- Giro ---
 
-label_giro = tk.Label(frame_header, text="Giro", font=("Arial", 18, "bold"))
+label_giro = tk.Label(frame_header, text="Giro", font=("Arial", 10, "bold"))
 label_giro.grid(row=0, column=1, sticky="w")
 
 # --- Nombre negocio ---
 
-label_nombre = tk.Label(frame_header, text="Nombre", font=("Arial", 18, "bold"))
+label_nombre = tk.Label(frame_header, text="Nombre", font=("Arial", 10, "bold"))
 label_nombre.grid(row=1, column=1, sticky="w")
 
 frame_header.columnconfigure(1, weight=1)
 
 # --- Boton usuario ---
 
-btn_usuario = tk.Button(frame_header, text="usuario", width=3)
-btn_usuario.grid(row=1, column=2, rowspan=2, padx=10)
+btn_usuario = tk.Button(frame_header, text="usuario", width=8)
+btn_usuario.grid(row=0, column=2, rowspan=8, padx=10)
 
 #-------------barra botones/funciones-------------
 
-barra_funciones = tk.Frame(ventana)
+barra_funciones = tk.Frame(ventana, height=30)
 barra_funciones.grid(row=1, column=0, sticky="ew")
 
 #-----------------Frames-----------------
@@ -220,8 +222,8 @@ frame_ventas.grid_columnconfigure(0, weight=1)
 
 # --- Titulo ---
 
-titulo_ventas = tk.Label(frame_ventas, text="F1 : Ventas", font=("Arial", 24))
-titulo_ventas.grid(row=0, column=0, pady=10)
+titulo_ventas = tk.Label(frame_ventas, text="Venta de productos", font=("Arial", 10))
+titulo_ventas.grid(row=0, column=0, sticky="w", pady=10)
 
 # --- Captura codigo ---
 
@@ -233,6 +235,9 @@ label_codigo_venta.pack(side="left", padx=5)
 
 entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18))
 entrada_codigo_venta.pack(side="left")
+
+btn_enter = tk.Button(frame_codigo_venta, text= "Enter - agregar producto", command=agregar_al_carrito)
+btn_enter.pack(side="left")
 
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
 
@@ -286,14 +291,14 @@ btn_ventas = tk.Button(
     text="F1 Ventas",
     command=mostrar_ventas
 )
-btn_ventas.pack(side="left", padx=10, pady=10)
+btn_ventas.pack(side="left", padx=10, pady=2)
 
 btn_productos = tk.Button(
     barra_funciones,
     text="F2 Productos",
     command=mostrar_productos
 )
-btn_productos.pack(side="left", padx=10, pady=10)
+btn_productos.pack(side="left", padx=10, pady=2)
 
 
 #-----------------pantalla productos-----------------
