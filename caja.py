@@ -19,54 +19,29 @@ class Caja:
                 return json.load(f)
 
 
-    def agregar_producto_carrito(self):      # Agrega productos
-        self.mostrar_catalogo()
-        
-        if not self.productos:
-            print("No hay productos disponibles")
-            return
+    def agregar_producto_carrito(self, codigo):      # Agrega productos
 
-        nombre = input("Nombre del producto: ").lower()
-        
-        producto_encontrado = None
         for p in self.productos:
-            if p["nombre"].lower() == nombre:
-                producto_encontrado = p
-                break
 
-        if not producto_encontrado:
-            print("Producto no encontrado")
-            return
+            if p["codigo_barras"] == codigo:
 
+                for item in self.carrito:
 
-        print(f'Producto: {producto_encontrado["nombre"]} - ${producto_encontrado["precio"]}')
+                    if item.codigo == codigo:
+                        item.cantidad += 1
+                        return item
 
-        while True:
-            try:
-                cantidad = int(input("Cantidad: "))
-                if cantidad <= 0:
-                    print("Debe ser mayor a 0")
-                else:
-                    break
-            except ValueError:
-                print("Valor invalido")
+                nuevo = Producto(p["codigo_barras"], p["nombre"], p["precio_venta"], 1)
         
-        producto = Producto(
-            producto_encontrado["nombre"],
-            producto_encontrado["precio"],
-            cantidad
-        )
+                self.carrito.append(nuevo)
         
-        self.carrito.append(producto)
-        print("Producto agregado")
+                return None
     
     def agregar_producto_inventario(self, producto):
         self.productos.append(producto)
 
         with open("productos.json", "w") as archivo:
             json.dump(self.productos, archivo, indent=4)
-
-        print("Producto agregado correctamente")
 
     def mostrar_carrito(self):        #	Muestra productos
         if not self.carrito:

@@ -47,22 +47,17 @@ def agregar_producto():
 
 def agregar_al_carrito(event=None):
 
-    codigo = entrada_codigo_venta.get()
+    codigo = entrada_codigo_venta.get().strip()
 
-    for producto in caja.productos:
-        if producto.get("codigo_barras") == codigo:
+    producto = caja.agregar_producto_carrito(codigo)
 
-            tabla_venta.insert("", 
-                        tk.END, 
-                        values=(
-                        producto.get("codigo_barras",""),
-                        producto.get("nombre", ""),
-                        producto.get("precio_venta", 0),
-                        1,
-                        producto.get("precio_venta", 0),
-                        "N/A"
-                               )
-                        )
+    if producto is None:
+        return
+
+    actualizar_tabla()
+
+    entrada_codigo_venta.delete(0, tk.END)
+    entrada_codigo_venta.focus_set()
 
 def mostrar_ventas(event=None):
 
@@ -86,6 +81,24 @@ def abrir_busqueda(event=None):
         show="headings"
     )
 
+def actualizar_tabla():
+
+    tabla_venta.delete(*tabla_venta.get_children())
+
+    total = 0
+ 
+    for producto in caja.carrito:
+        
+        importe = producto.precio * producto.cantidad
+        total += importe
+        
+        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
+
+    label_total.config(text=f"${total:,.2f}")
+
+    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
+
+    label_articulos.config(text=f"Articulos:{cantidad_articulos}")
     
 # ---ENCABEZADOS---
 
@@ -302,6 +315,7 @@ tabla_venta.grid(row=3, column=0, sticky="nsew",padx=10, pady=2)
 
 frame_total = tk.Frame(frame_ventas)
 frame_total.grid(row=4, column=0, sticky="ew")
+
 
 label_articulos = tk.Label(frame_total, text="0 productos en la venta actual", font=("Arial", 14))
 label_articulos.pack(side="left", padx=20)
