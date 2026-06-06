@@ -51,10 +51,10 @@ def agregar_al_carrito(event=None):
 
     producto = caja.agregar_producto_carrito(codigo)
 
+    actualizar_tabla()
+
     if producto is None:
         return
-
-    actualizar_tabla()
 
     entrada_codigo_venta.delete(0, tk.END)
     entrada_codigo_venta.focus_set()
@@ -98,7 +98,9 @@ def actualizar_tabla():
 
     cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
 
-    label_articulos.config(text=f"Articulos:{cantidad_articulos}")
+    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
+
+    label_total_grande.config(text=f"${total:,.2f}")
     
 # ---ENCABEZADOS---
 
@@ -316,35 +318,34 @@ tabla_venta.grid(row=3, column=0, sticky="nsew",padx=10, pady=2)
 frame_total = tk.Frame(frame_ventas)
 frame_total.grid(row=4, column=0, sticky="ew")
 
-
 label_articulos = tk.Label(frame_total, text="0 productos en la venta actual", font=("Arial", 14))
 label_articulos.pack(side="left", padx=20)
 
-label_total = tk.Label(frame_total, text="$0.00", font=("Arial", 22, "bold"))
-label_total.pack(side="right", padx=20, pady=10)
+label_total_grande = tk.Label(frame_total, text="$0.00", font=("Arial", 22, "bold"))
+label_total_grande.pack(side="right", padx=10, pady=2)
 
 btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", font=("Arial", 14, "bold"))
-btn_cobrar.pack(side="right", padx=20, pady=10)
+btn_cobrar.pack(side="right", padx=10, pady=2)
 
 # !--- Frame pago ---!
 
 frame_pago = tk.Frame(frame_ventas)
 frame_pago.grid(row=5, column=0, sticky="ew")
 
-label_total = tk.Label(frame_total, text="Total: $0.00", font=("Arial", 12))
+label_total = tk.Label(frame_pago, text="Total: $0.00", font=("Arial", 12))
 label_total.pack(side="left")
 
 label_pago = tk.Label(frame_pago, text="Pago con: $0.00", font=("Arial", 12))
-label_total.pack(side="left")
+label_pago.pack(side="left")
 
-label_cambio = tk.Label(frame_total, text="Cambio: $0.00", font=("Arial", 12)) 
-label_total.pack(side="left")
+label_cambio = tk.Label(frame_pago, text="Cambio: $0.00", font=("Arial", 12)) 
+label_cambio.pack(side="left")
 
 
 # ! --- Frame Info ---- !
 
 frame_info = tk.Frame(frame_ventas, relief="sunken", bd=1)
-frame_info.grid(row=5, column=0, sticky="ew")
+frame_info.grid(row=6, column=0, sticky="ew")
 
 label_info = tk.Label(frame_info, text="Punto de venta: Teclee o escanee el producto", anchor="w")
 label_info.pack(side="left", padx=2)
