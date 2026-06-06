@@ -64,7 +64,6 @@ def agregar_al_carrito(event=None):
                                )
                         )
 
-
 def mostrar_ventas(event=None):
 
     frame_productos.grid_forget()
@@ -172,7 +171,7 @@ def abrir_busqueda(event=None):
 ventana = tk.Tk()
 
 ventana.title("Punto de venta")
-ventana.geometry("800x600")
+ventana.state("zoomed")
 
 ventana.grid_rowconfigure(3, weight=1)
 ventana.grid_columnconfigure(0, weight=1)
@@ -206,7 +205,7 @@ btn_usuario.grid(row=0, column=2, rowspan=2, padx=10)
 
 #-------------barra botones/funciones-------------
 
-barra_funciones = tk.Frame(ventana, height=30)
+barra_funciones = tk.Frame(ventana, height=30, relief="ridge", bd=2)
 barra_funciones.grid(row=1, column=0, sticky="ew")
 
 #-----------------Frames-----------------
@@ -217,13 +216,13 @@ frame_ventas.grid(row=2, column=0, sticky="nsew")
 
 # --- Expansion interna ---
 
-frame_ventas.grid_rowconfigure(2, weight=1)
+frame_ventas.grid_rowconfigure(3, weight=1)
 frame_ventas.grid_columnconfigure(0, weight=1)
 
 # --- Titulo ---
 
-titulo_ventas = tk.Label(frame_ventas, text="Venta de productos", font=("Arial", 10))
-titulo_ventas.grid(row=0, column=0, sticky="w", pady=10)
+titulo_ventas = tk.Label(frame_ventas, text="Venta de productos", font=("Arial", 10), relief="ridge", bd=2)
+titulo_ventas.grid(row=0, column=0, sticky="w", pady=2)
 
 # --- Captura codigo ---
 
@@ -276,6 +275,7 @@ tabla_venta = ttk.Treeview(
         "importe"
         ),
         show="headings",
+        height=20
     )
 
 # !---Encabezados---!
@@ -296,15 +296,48 @@ tabla_venta.column("importe", width=100)
 
 # --- Mostrar tabla ---
 
-tabla_venta.grid(row=3, column=0, sticky="nsew", padx=10, pady=10)
+tabla_venta.grid(row=3, column=0, sticky="nsew",padx=10, pady=2)
 
 # !--- Frame total inferior ---!
 
 frame_total = tk.Frame(frame_ventas)
 frame_total.grid(row=4, column=0, sticky="ew")
 
-label_total = tk.Label(frame_total, text="TOTAL: $0.00", font=("Arial", 22, "bold"))
+label_articulos = tk.Label(frame_total, text="0 productos en la venta actual", font=("Arial", 14))
+label_articulos.pack(side="left", padx=20)
+
+label_total = tk.Label(frame_total, text="$0.00", font=("Arial", 22, "bold"))
 label_total.pack(side="right", padx=20, pady=10)
+
+btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", font=("Arial", 14, "bold"))
+btn_cobrar.pack(side="right", padx=20, pady=10)
+
+# !--- Frame pago ---!
+
+frame_pago = tk.Frame(frame_ventas)
+frame_pago.grid(row=5, column=0, sticky="ew")
+
+label_total = tk.Label(frame_total, text="Total: $0.00", font=("Arial", 12))
+label_total.pack(side="left")
+
+label_pago = tk.Label(frame_pago, text="Pago con: $0.00", font=("Arial", 12))
+label_total.pack(side="left")
+
+label_cambio = tk.Label(frame_total, text="Cambio: $0.00", font=("Arial", 12)) 
+label_total.pack(side="left")
+
+
+# ! --- Frame Info ---- !
+
+frame_info = tk.Frame(frame_ventas, relief="sunken", bd=1)
+frame_info.grid(row=5, column=0, sticky="ew")
+
+label_info = tk.Label(frame_info, text="Punto de venta: Teclee o escanee el producto", anchor="w")
+label_info.pack(side="left", padx=2)
+
+label_hora = tk.Label(frame_info, text="")
+label_hora.pack(side="right", padx=2)
+
 
 #-----------------pantalla ventas-----------------
 
@@ -419,6 +452,8 @@ btn_agregar.pack()
 ventana.bind("<F1>", mostrar_ventas)
 ventana.bind("<F2>", mostrar_productos)
 ventana.bind("<F10>", abrir_busqueda)
+
+entrada_codigo_venta.focus_set()
 
 #Mainloop
 ventana.mainloop()
