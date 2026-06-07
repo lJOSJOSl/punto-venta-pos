@@ -18,7 +18,6 @@ class Caja:
         with open('productos.json', 'r') as f:
                 return json.load(f)
 
-
     def agregar_producto_carrito(self, codigo):      # Agrega productos
 
         for p in self.productos:
@@ -39,34 +38,6 @@ class Caja:
     
         return None
     
-    def agregar_producto_inventario(self, producto):
-        self.productos.append(producto)
-
-        with open("productos.json", "w") as archivo:
-            json.dump(self.productos, archivo, indent=4)
-
-    def mostrar_carrito(self):        #	Muestra productos
-        if not self.carrito:
-            print("Carrito vacio")
-            return
-        self.calcular_total()
-        
-        print("\nCarrito:")
-        print("No.\tProducto\tPrecio\tCantidad\tTotal")
-        print("-" * 60)
-        
-        for i, producto in enumerate(self.carrito, start=1):
-            total_producto = producto.precio * producto.cantidad
-            print(f"{i}\t{producto.nombre}\t${producto.precio:.2f}\t{producto.cantidad}\t\t${total_producto:.2f}")
-            
-        print("-" * 60)
-        print(f"\t\t\t\tTotal: ${self.total:.2f}")
-
-    def calcular_total(self):                 # Suma los precios
-        self.total = sum(p.precio * p.cantidad for p in self.carrito)
-        print(f'Total a pagar: ${self.total:.2f}')
-        return self.total
-
     def aumentar_cantidad(self, codigo):
 
         for producto in self.carrito:
@@ -97,6 +68,36 @@ class Caja:
                 print("Indice inválido")
         except ValueError:
             print("Entrada invalida")
+
+    def agregar_producto_inventario(self, producto):
+        self.productos.append(producto)
+
+        with open("productos.json", "w") as archivo:
+            json.dump(self.productos, archivo, indent=4)
+
+    def mostrar_carrito(self):        #	Muestra productos
+        if not self.carrito:
+            print("Carrito vacio")
+            return
+        self.calcular_total()
+        
+        print("\nCarrito:")
+        print("No.\tProducto\tPrecio\tCantidad\tTotal")
+        print("-" * 60)
+        
+        for i, producto in enumerate(self.carrito, start=1):
+            total_producto = producto.precio * producto.cantidad
+            print(f"{i}\t{producto.nombre}\t${producto.precio:.2f}\t{producto.cantidad}\t\t${total_producto:.2f}")
+            
+        print("-" * 60)
+        print(f"\t\t\t\tTotal: ${self.total:.2f}")
+
+    def calcular_total(self):                 # Suma los precios
+        self.total = sum(p.precio * p.cantidad for p in self.carrito)
+        print(f'Total a pagar: ${self.total:.2f}')
+        return self.total
+
+
     def venta(self):
         if not self.carrito:
             print("Carrito vacío")

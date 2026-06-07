@@ -53,6 +53,8 @@ def agregar_al_carrito(event=None):
     producto = caja.agregar_producto_carrito(codigo)
 
     actualizar_tabla()
+    
+    seleccionar_producto(codigo)
 
     if producto is None:
         return
@@ -82,6 +84,17 @@ def disminuir_cantidad(event=None):
     caja.disminuir_cantidad(codigo)
 
     actualizar_tabla()
+
+def seleccionar_producto(codigo):
+    for item in tabla_venta.get_children():
+
+        valores = tabla_venta.item(item, "values")
+            
+        if valores[0] == codigo:
+            tabla_venta.focus(item)
+            tabla_venta.selection_set(item)
+            tabla_venta.see(item)
+            break
 
 def mostrar_ventas(event=None):
 
