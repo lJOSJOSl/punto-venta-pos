@@ -52,28 +52,55 @@ def agregar_al_carrito(event=None):
 
     producto = caja.agregar_producto_carrito(codigo)
 
-    actualizar_tabla()
+    if producto is None:
+        entrada_codigo_venta.delete(0, tk.END)
+        return
+
+    actualizar_tabla(codigo)
     
     seleccionar_producto(codigo)
 
-    if producto is None:
-        return
-
-    print("CONTENIDO:", repr(entrada_codigo_venta.get()))
-    entrada_codigo_venta.delete(0, tk.END)
-    print("DESPUES:", repr(entrada_codigo_venta.get()))
+    entrada_codigo_venta.delete(0, tk.END)    
     entrada_codigo_venta.focus_set()
     return "break"
+
+def actualizar_tabla(codigo_seleccionado=None):
+
+    tabla_venta.delete(*tabla_venta.get_children())
+
+    total = 0
+ 
+    for producto in caja.carrito:
+        
+        importe = producto.precio * producto.cantidad
+        total += importe
+        
+        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
+
+    if codigo_seleccionado:
+    
+        seleccionar_producto(codigo_seleccionado)
+
+    label_total.config(text=f"${total:,.2f}")
+
+    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
+
+    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
+
+    label_total_grande.config(text=f"${total:,.2f}")
+
 
 def aumentar_cantidad(event=None):
 
     item = tabla_venta.focus()
+    print("Focus:", item)
     if not item:
         return
     codigo = tabla_venta.item(item, "values")[0]
     caja.aumentar_cantidad(codigo)
 
-    actualizar_tabla()
+    actualizar_tabla(codigo)
+
 
 def disminuir_cantidad(event=None):
 
@@ -83,14 +110,15 @@ def disminuir_cantidad(event=None):
     codigo = tabla_venta.item(item, "values")[0]
     caja.disminuir_cantidad(codigo)
 
-    actualizar_tabla()
+    actualizar_tabla(codigo)
 
 def seleccionar_producto(codigo):
+    
     for item in tabla_venta.get_children():
 
         valores = tabla_venta.item(item, "values")
             
-        if valores[0] == codigo:
+        if str(valores[0]) == str(codigo):
             tabla_venta.focus(item)
             tabla_venta.selection_set(item)
             tabla_venta.see(item)
@@ -195,26 +223,7 @@ def abrir_busqueda(event=None):
     entrada.focus_set()
 
 
-def actualizar_tabla():
 
-    tabla_venta.delete(*tabla_venta.get_children())
-
-    total = 0
- 
-    for producto in caja.carrito:
-        
-        importe = producto.precio * producto.cantidad
-        total += importe
-        
-        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
-
-    label_total.config(text=f"${total:,.2f}")
-
-    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
-
-    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
-
-    label_total_grande.config(text=f"${total:,.2f}")
     
     
 
