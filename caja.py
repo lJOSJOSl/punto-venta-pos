@@ -35,7 +35,9 @@ class Caja:
         
                 self.carrito.append(nuevo)
         
-                return None
+                return nuevo
+    
+        return None
     
     def agregar_producto_inventario(self, producto):
         self.productos.append(producto)
@@ -65,7 +67,24 @@ class Caja:
         print(f'Total a pagar: ${self.total:.2f}')
         return self.total
 
-    def eliminar_producto(self):
+    def aumentar_cantidad(self, codigo):
+
+        for producto in self.carrito:
+            if producto.codigo == codigo:
+                producto.cantidad += 1
+                return True
+        return False
+
+    def disminuir_cantidad(self, codigo):
+        for producto in self.carrito:
+            if producto.codigo == codigo:
+                producto.cantidad -= 1
+                if producto.cantidad <=0:
+                    self.carrito.remove(producto)
+                return True
+        return False
+
+    def eliminar_producto(self, codigo):
         self.mostrar_carrito()
         
         try:
@@ -161,5 +180,3 @@ class Caja:
             for p in v['productos']:
                 print(f"- {p['nombre']} x{p['cantidad']} ${p['precio']}")        
             print(f"Total: ${v['total']}")
-
-    

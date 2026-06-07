@@ -46,6 +46,7 @@ def agregar_producto():
         print("El precio debe ser un numero")
 
 def agregar_al_carrito(event=None):
+    print("Escaneado:", entrada_codigo_venta.get())
 
     codigo = entrada_codigo_venta.get().strip()
 
@@ -56,8 +57,31 @@ def agregar_al_carrito(event=None):
     if producto is None:
         return
 
+    print("CONTENIDO:", repr(entrada_codigo_venta.get()))
     entrada_codigo_venta.delete(0, tk.END)
+    print("DESPUES:", repr(entrada_codigo_venta.get()))
     entrada_codigo_venta.focus_set()
+    return "break"
+
+def aumentar_cantidad(event=None):
+
+    item = tabla_venta.focus()
+    if not item:
+        return
+    codigo = tabla_venta.item(item, "values")[0]
+    caja.aumentar_cantidad(codigo)
+
+    actualizar_tabla()
+
+def disminuir_cantidad(event=None):
+
+    item = tabla_venta.focus()
+    if not item:
+        return
+    codigo = tabla_venta.item(item, "values")[0]
+    caja.disminuir_cantidad(codigo)
+
+    actualizar_tabla()
 
 def mostrar_ventas(event=None):
 
@@ -81,27 +105,6 @@ def abrir_busqueda(event=None):
         show="headings"
     )
 
-def actualizar_tabla():
-
-    tabla_venta.delete(*tabla_venta.get_children())
-
-    total = 0
- 
-    for producto in caja.carrito:
-        
-        importe = producto.precio * producto.cantidad
-        total += importe
-        
-        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
-
-    label_total.config(text=f"${total:,.2f}")
-
-    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
-
-    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
-
-    label_total_grande.config(text=f"${total:,.2f}")
-    
 # ---ENCABEZADOS---
 
     tabla.heading("nombre", text="Producto")
@@ -134,11 +137,11 @@ def actualizar_tabla():
         print("Buscando:", texto)#Debug
 
         for producto in caja.productos:
-
+        
             nombre = producto.get("nombre", "").lower()
-
+        
             if texto == "" or texto in nombre:
-
+        
                 tabla.insert(
                      "",
                      tk.END,
@@ -148,7 +151,7 @@ def actualizar_tabla():
                          producto.get("departamento", "")
                      )
                 )
-
+           
     entrada.bind("<KeyRelease>", buscar)
 
     def seleccionar(event=None):
@@ -178,6 +181,29 @@ def actualizar_tabla():
 
     entrada.focus_set()
 
+
+def actualizar_tabla():
+
+    tabla_venta.delete(*tabla_venta.get_children())
+
+    total = 0
+ 
+    for producto in caja.carrito:
+        
+        importe = producto.precio * producto.cantidad
+        total += importe
+        
+        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
+
+    label_total.config(text=f"${total:,.2f}")
+
+    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
+
+    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
+
+    label_total_grande.config(text=f"${total:,.2f}")
+    
+    
 
 #-----------------Ventanas-----------------
 
@@ -463,6 +489,8 @@ btn_agregar = tk.Button(
 btn_agregar.pack()
 
 #teclas
+ventana.bind("+", aumentar_cantidad)
+ventana.bind("-", disminuir_cantidad)
 
 ventana.bind("<F1>", mostrar_ventas)
 ventana.bind("<F2>", mostrar_productos)
