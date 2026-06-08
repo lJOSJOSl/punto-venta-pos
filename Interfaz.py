@@ -396,7 +396,7 @@ btn_entradas.pack(side="left")
 btn_salidas = tk.Button(frame_botones_ventas, text="F5 Salidas")
 btn_salidas.pack(side="left")
 
-btn_borrar_articulo = tk.Button(frame_botones_ventas, text="Borrar Articulo")
+btn_borrar_articulo = tk.Button(frame_botones_ventas, text="Borrar Articulo", command=eliminar_producto)
 btn_borrar_articulo.pack(side="left")
 
 
