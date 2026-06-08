@@ -83,6 +83,12 @@ def actualizar_tabla(codigo_seleccionado=None):
     
         seleccionar_producto(codigo_seleccionado)
 
+    elif tabla_venta.get_children():
+        primer_item = tabla_venta.get_children()[0]
+
+        tabla_venta.selection_set(primer_item)
+        tabla_venta.focus(primer_item)    
+
     label_total.config(text=f"${total:,.2f}")
 
     cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
@@ -118,7 +124,6 @@ def disminuir_cantidad(event=None):
 
 def eliminar_producto(event=None):
 
-    print("delete presionado")
     global codigo_seleccionado
 
     if not codigo_seleccionado:
@@ -130,8 +135,19 @@ def eliminar_producto(event=None):
         print("Antes:", len(caja.carrito))
         caja.eliminar_producto(codigo_seleccionado)
         print("Despues:", len(caja.carrito))
+        print("Seleccionado:", codigo_seleccionado)
         actualizar_tabla()
+        
+        items = tabla_venta.get_children()
+        if items:
+            
+            primer_item = items[0]
+            valores = tabla_venta.item(primer_item, "values")
+            codigo_seleccionado = valores[0]
 
+            tabla_venta.selection_set(primer_item)
+            tabla_venta.focus(primer_item)
+        entrada_codigo_venta.focus_set()
     return "break"    
 
 def seleccionar_producto(codigo):
@@ -398,7 +414,6 @@ btn_salidas.pack(side="left", padx=5)
 btn_borrar_articulo = tk.Button(frame_botones_ventas, text="Borrar Articulo", command=eliminar_producto)
 btn_borrar_articulo.pack(side="left", padx=5)
 
-
 # !--- Tabla carrito en F1 ---!
 
 tabla_venta = ttk.Treeview(
@@ -462,7 +477,6 @@ label_pago.pack(side="left")
 label_cambio = tk.Label(frame_pago, text="Cambio: $0.00", font=("Arial", 12)) 
 label_cambio.pack(side="left")
 
-
 # ! --- Frame Info ---- !
 
 frame_info = tk.Frame(frame_ventas, relief="sunken", bd=1)
@@ -473,7 +487,6 @@ label_info.pack(side="left", padx=2)
 
 label_hora = tk.Label(frame_info, text="")
 label_hora.pack(side="right", padx=2)
-
 
 #-----------------pantalla ventas-----------------
 
@@ -486,7 +499,6 @@ btn_productos = tk.Button(
     command=mostrar_productos
 )
 btn_productos.pack(side="left", padx=10, pady=2)
-
 
 #-----------------pantalla productos-----------------
 
