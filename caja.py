@@ -57,8 +57,16 @@ class Caja:
 
     def eliminar_producto(self, codigo):
 
-        self.carrito = [p for p in self.carrito if p.codigo != codigo]
-        
+        print("Buscando:", codigo)
+        for item in self.carrito:
+            print("Producto:", item.codigo)
+
+            if item.codigo == codigo:
+                print("Encontrado")
+            
+                self.carrito.remove(item)
+                return True
+        return False
     def agregar_producto_inventario(self, producto):
         self.productos.append(producto)
 

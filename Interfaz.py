@@ -2,6 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from caja import Caja
 
 # -----------------Objetos globales-----------------
@@ -117,15 +118,21 @@ def disminuir_cantidad(event=None):
 
 def eliminar_producto(event=None):
 
-    item = tabla_venta.focus()
-    if not item:
-        return
-    codigo = tabla_venta.item(item, "values")[0]
-    caja.eliminar_producto(codigo)
+    print("delete presionado")
+    global codigo_seleccionado
 
-    actualizar_tabla(codigo)
+    if not codigo_seleccionado:
+        return "break"
+    
+    confirmar = messagebox.askyesno("Eliminar producto", "¿Seguro que quiere eliminar el articulo?")
+    print(confirmar)
+    if confirmar:
+        print("Antes:", len(caja.carrito))
+        caja.eliminar_producto(codigo_seleccionado)
+        print("Despues:", len(caja.carrito))
+        actualizar_tabla()
 
-    return "break"
+    return "break"    
 
 def seleccionar_producto(codigo):
 
@@ -368,7 +375,7 @@ btn_enter.pack(side="left")
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
 entrada_codigo_venta.bind("+", aumentar_cantidad)
 entrada_codigo_venta.bind("-", disminuir_cantidad)
-entrada_codigo_venta.bind("Delete", eliminar_producto)
+entrada_codigo_venta.bind("<Delete>", eliminar_producto)
 
 frame_codigo_venta.columnconfigure(0, weight=1)
 
