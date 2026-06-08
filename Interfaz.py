@@ -77,7 +77,17 @@ def actualizar_tabla(codigo_seleccionado=None):
         importe = producto.precio * producto.cantidad
         total += importe
         
-        tabla_venta.insert("", "end", values=(producto.codigo, producto.nombre, producto.precio, producto.cantidad, importe))
+        tabla_venta.insert(
+             "",
+             "end",
+             values=(
+                 producto.codigo,
+                 producto.nombre,
+                 f"${producto.precio:.2f}",
+                 producto.cantidad, 
+                 f"${importe:.2f}",
+              )
+           )
 
     if codigo_seleccionado:
     
@@ -96,7 +106,6 @@ def actualizar_tabla(codigo_seleccionado=None):
     label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
 
     label_total_grande.config(text=f"${total:,.2f}")
-
 
 def aumentar_cantidad(event=None):
 
@@ -130,12 +139,11 @@ def eliminar_producto(event=None):
         return "break"
     
     confirmar = messagebox.askyesno("Eliminar producto", "¿Seguro que quiere eliminar el articulo?")
-    print(confirmar)
+    
     if confirmar:
-        print("Antes:", len(caja.carrito))
+        
         caja.eliminar_producto(codigo_seleccionado)
-        print("Despues:", len(caja.carrito))
-        print("Seleccionado:", codigo_seleccionado)
+        
         actualizar_tabla()
         
         items = tabla_venta.get_children()
@@ -209,17 +217,13 @@ def abrir_busqueda(event=None):
 
     entrada.pack(pady=10)
     tabla.pack(fill="both", expand=True)
-    
-    print("Productos en caja:", caja.productos)
-
+ 
     def buscar(event=None):
     
         tabla.delete(*tabla.get_children())
 
         texto = entrada.get().strip().lower()
         
-        print("Buscando:", texto)#Debug
-
         for producto in caja.productos:
         
             nombre = producto.get("nombre", "").lower()
@@ -368,7 +372,7 @@ frame_ventas.grid(row=2, column=0, sticky="nsew")
 frame_ventas.grid_rowconfigure(3, weight=1)
 frame_ventas.grid_columnconfigure(0, weight=1)
 
-# --- Titulo ---
+# --- Titulo (Venta de productos)---
 
 titulo_ventas = tk.Label(frame_ventas, text="Venta de productos", font=("Arial", 10), relief="ridge", bd=2)
 titulo_ventas.grid(row=0, column=0, sticky="w", pady=2)
@@ -385,7 +389,7 @@ entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18)
 entrada_codigo_venta.pack(side="left")
 
 btn_enter = tk.Button(frame_codigo_venta, text="Enter - agregar producto", command=agregar_al_carrito)
-btn_enter.pack(side="left")
+btn_enter.pack(side="left", padx=5)
 
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
 entrada_codigo_venta.bind("+", aumentar_cantidad)
@@ -423,7 +427,8 @@ tabla_venta = ttk.Treeview(
         "descripcion",
         "precio",
         "cantidad",
-        "importe"
+        "importe",
+        "existencias"
         ),
         show="headings",
         height=20
@@ -436,14 +441,16 @@ tabla_venta.heading("descripcion", text="Descripción")
 tabla_venta.heading("precio", text="Precio")
 tabla_venta.heading("cantidad", text="Cantidad")
 tabla_venta.heading("importe", text="Importe")
+tabla_venta.heading("existencias", text="Existencias")
 
 # !---Ancho de columnas---!
 
-tabla_venta.column("codigo", width=150)
-tabla_venta.column("descripcion", width=300)
-tabla_venta.column("precio", width=100)
-tabla_venta.column("cantidad", width=80)
-tabla_venta.column("importe", width=100)
+tabla_venta.column("codigo", width=100, anchor="center", stretch=False)
+tabla_venta.column("descripcion", width=220, anchor="w", stretch=False)
+tabla_venta.column("precio", width=100, anchor="center", stretch=False)
+tabla_venta.column("cantidad", width=60, anchor="center", stretch=False)
+tabla_venta.column("importe", width=80, anchor="center", stretch=False)
+tabla_venta.column("existencias", width=60, anchor="center", stretch=False)
 
 # --- Mostrar tabla ---
 
