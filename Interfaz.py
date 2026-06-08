@@ -368,7 +368,6 @@ label_codigo_venta.pack(side="left", padx=5)
 entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18))
 entrada_codigo_venta.pack(side="left")
 
-
 btn_enter = tk.Button(frame_codigo_venta, text="Enter - agregar producto", command=agregar_al_carrito)
 btn_enter.pack(side="left")
 
@@ -385,19 +384,19 @@ frame_botones_ventas = tk.Frame(frame_ventas)
 frame_botones_ventas.grid(row=2, column=0, sticky="w", pady=(2,2))
 
 btn_venta_rapida = tk.Button(frame_botones_ventas, text="CTRL+P VR",)
-btn_venta_rapida.pack(side="left")
+btn_venta_rapida.pack(side="left", padx=5)
 
 btn_buscar = tk.Button(frame_botones_ventas, text="F10: Buscar", command=abrir_busqueda)
-btn_buscar.pack(side="left")
+btn_buscar.pack(side="left", padx=5)
 
 btn_entradas = tk.Button(frame_botones_ventas, text="F4 Entradas")
-btn_entradas.pack(side="left")
+btn_entradas.pack(side="left", padx=5)
 
 btn_salidas = tk.Button(frame_botones_ventas, text="F5 Salidas")
-btn_salidas.pack(side="left")
+btn_salidas.pack(side="left", padx=5)
 
 btn_borrar_articulo = tk.Button(frame_botones_ventas, text="Borrar Articulo", command=eliminar_producto)
-btn_borrar_articulo.pack(side="left")
+btn_borrar_articulo.pack(side="left", padx=5)
 
 
 # !--- Tabla carrito en F1 ---!
@@ -478,11 +477,7 @@ label_hora.pack(side="right", padx=2)
 
 #-----------------pantalla ventas-----------------
 
-btn_ventas = tk.Button(
-    barra_funciones,
-    text="F1 Ventas",
-    command=mostrar_ventas
-)
+btn_ventas = tk.Button(barra_funciones, text="F1:Ventas", command=mostrar_ventas)
 btn_ventas.pack(side="left", padx=10, pady=2)
 
 btn_productos = tk.Button(
