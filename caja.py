@@ -56,19 +56,9 @@ class Caja:
         return False
 
     def eliminar_producto(self, codigo):
-        self.mostrar_carrito()
-        
-        try:
-            indice = int(input("numero de producto a eliminar: ")) -1
-            if 0 <= indice < len(self.carrito):
-                self.carrito.pop(indice)
-                self.calcular_total()
-                print("Producto eliminado")
-            else:
-                print("Indice inválido")
-        except ValueError:
-            print("Entrada invalida")
 
+        self.carrito = [p for p in self.carrito if p.codigo != codigo]
+        
     def agregar_producto_inventario(self, producto):
         self.productos.append(producto)
 

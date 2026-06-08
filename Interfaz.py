@@ -7,6 +7,7 @@ from caja import Caja
 # -----------------Objetos globales-----------------
 
 caja = Caja()
+codigo_seleccionado = None
 
 # -----------------Funciones-----------------
 
@@ -46,10 +47,10 @@ def agregar_producto():
         print("El precio debe ser un numero")
 
 def agregar_al_carrito(event=None):
-    print("Escaneado:", entrada_codigo_venta.get())
 
     codigo = entrada_codigo_venta.get().strip()
 
+    seleccionar_producto(codigo)  
     producto = caja.agregar_producto_carrito(codigo)
 
     if producto is None:
@@ -92,33 +93,52 @@ def actualizar_tabla(codigo_seleccionado=None):
 
 def aumentar_cantidad(event=None):
 
-    item = tabla_venta.focus()
-    print("Focus:", item)
-    if not item:
-        return
-    codigo = tabla_venta.item(item, "values")[0]
-    caja.aumentar_cantidad(codigo)
+    global codigo_seleccionado
 
-    actualizar_tabla(codigo)
+    if not codigo_seleccionado:
+        return "break"
 
+    caja.aumentar_cantidad(codigo_seleccionado)
+
+    actualizar_tabla(codigo_seleccionado)
+    return "break"
 
 def disminuir_cantidad(event=None):
+    
+    global codigo_seleccionado
+
+    if not codigo_seleccionado:
+        return "break"
+
+    caja.disminuir_cantidad(codigo_seleccionado)
+
+    actualizar_tabla(codigo_seleccionado)
+    return "break"
+
+def eliminar_producto(event=None):
 
     item = tabla_venta.focus()
     if not item:
         return
     codigo = tabla_venta.item(item, "values")[0]
-    caja.disminuir_cantidad(codigo)
+    caja.eliminar_producto(codigo)
 
     actualizar_tabla(codigo)
 
+    return "break"
+
 def seleccionar_producto(codigo):
+
+    global codigo_seleccionado
+    
+    codigo_seleccionado = codigo
     
     for item in tabla_venta.get_children():
 
         valores = tabla_venta.item(item, "values")
             
         if str(valores[0]) == str(codigo):
+
             tabla_venta.focus(item)
             tabla_venta.selection_set(item)
             tabla_venta.see(item)
@@ -222,11 +242,54 @@ def abrir_busqueda(event=None):
 
     entrada.focus_set()
 
+def mover_abajo(event=None):
 
+    global codigo_seleccionado
 
-    
-    
+    items = tabla_venta.get_children()
 
+    if not items:
+        return "break"
+
+    codigos = []
+
+    for item in items:
+        codigos.append(tabla_venta.item(item, "values")[0])
+
+    if codigo_seleccionado not in codigos:
+        codigo_seleccionado = codigos[0]
+    else:
+        indice = codigos.index(codigo_seleccionado)
+
+        if indice < len(codigos) - 1:
+            codigo_seleccionado = codigos[indice + 1]
+
+    seleccionar_producto(codigo_seleccionado)
+
+    return "break"
+
+def mover_arriba(event=None):
+
+    global codigo_seleccionado
+
+    items = tabla_venta.get_children()
+
+    if not items:
+        return "break"
+
+    codigos = [tabla_venta.item(item, "values")[0] for item in items]
+
+    if codigo_seleccionado not in codigos:
+        codigo_seleccionado = codigos[0]
+    else:
+        indice = codigos.index(codigo_seleccionado)
+
+        if indice > 0:
+            codigo_seleccionado = codigos[indice - 1]
+
+    seleccionar_producto(codigo_seleccionado)
+
+    return "break"
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---
@@ -298,10 +361,14 @@ label_codigo_venta.pack(side="left", padx=5)
 entrada_codigo_venta = tk.Entry(frame_codigo_venta, width=30, font=("Arial", 18))
 entrada_codigo_venta.pack(side="left")
 
+
 btn_enter = tk.Button(frame_codigo_venta, text="Enter - agregar producto", command=agregar_al_carrito)
 btn_enter.pack(side="left")
 
 entrada_codigo_venta.bind("<Return>", agregar_al_carrito)
+entrada_codigo_venta.bind("+", aumentar_cantidad)
+entrada_codigo_venta.bind("-", disminuir_cantidad)
+entrada_codigo_venta.bind("Delete", eliminar_producto)
 
 frame_codigo_venta.columnconfigure(0, weight=1)
 
@@ -511,12 +578,12 @@ btn_agregar = tk.Button(
 btn_agregar.pack()
 
 #teclas
-ventana.bind("+", aumentar_cantidad)
-ventana.bind("-", disminuir_cantidad)
 
 ventana.bind("<F1>", mostrar_ventas)
 ventana.bind("<F2>", mostrar_productos)
 ventana.bind("<F10>", abrir_busqueda)
+ventana.bind("<Up>", mover_arriba)
+ventana.bind("<Down>", mover_abajo)
 
 entrada_codigo_venta.focus_set()
 
