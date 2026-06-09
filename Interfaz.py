@@ -34,7 +34,7 @@ def agregar_producto():
             departamento
         )
 
-        busqueda()
+#       busqueda()
         mostrar_ventas()
 
         entrada_nombre.delete(0, tk.END)
@@ -293,7 +293,7 @@ def abrir_busqueda(event=None):
 
         codigo = item
 
-        caja.agregar_producto_carrito(codigo)
+        caja.agregar_al_carrito(codigo)
         actualizar_tabla(codigo)
 
         ventana_busqueda.destroy()
