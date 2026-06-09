@@ -188,6 +188,7 @@ def mostrar_productos(event=None):
 def abrir_busqueda(event=None):
 
     ventana_busqueda = tk.Toplevel(ventana)
+    ventana_busqueda.grab_set()
     ventana_busqueda.title("Busqueda de Productos")
     ventana_busqueda.geometry("700x500")
 
@@ -219,28 +220,78 @@ def abrir_busqueda(event=None):
     tabla.pack(fill="both", expand=True)
  
     def buscar(event=None):
+
+        texto = entrada.get()
     
+        print("Texto:", repr(texto))
+
         tabla.delete(*tabla.get_children())
 
-        texto = entrada.get().strip().lower()
+        resultados = caja.buscar_productos_nombre(entrada.get())
+        print(len(resultados))   
+
+        for producto in resultados:
         
-        for producto in caja.productos:
-        
-            nombre = producto.get("nombre", "").lower()
-        
-            if texto == "" or texto in nombre:
-        
-                tabla.insert(
+            tabla.insert(
                      "",
                      tk.END,
+                     iid=producto["codigo_barras"],
                      values=(
-                         producto.get("nombre", ""),
-                         producto.get("precio_venta", 0),
-                         producto.get("departamento", "")
+                         producto["nombre"],
+                         producto["precio_venta"],
+                         producto["departamento"]
                      )
                 )
-           
-    entrada.bind("<KeyRelease>", buscar)
+        items = tabla.get_children()
+
+        if items:
+            tabla.focus(items[0])
+            tabla.selection_set(items[0])
+    
+    def bajar_a_tabla(event=None):
+        print("paso a tabla")
+        items = tabla.get_children()
+
+        if len(items) > 1:
+            tabla.focus(items[1])
+            tabla.selection_set(items[1])
+        elif items:
+            tabla.focus(items[0])
+            tabla.selection_set(items[0])
+       
+        tabla.focus_set()
+
+        return "break"
+
+    def mover_abajo_busqueda(event=None):
+        print("abajo busqueda")
+        item = tabla.focus()
+
+        if not item:
+            return "break"
+
+        siguiente = tabla.next(item)
+
+        if siguiente:
+            tabla.focus(siguiente)
+            tabla.selection_set(siguiente)
+
+        return "break"
+
+    def mover_arriba_busqueda(event=None):
+
+        item = tabla.focus()
+
+        if not item:
+            return "break"
+
+        anterior = tabla.prev(item)
+
+        if anterior:
+            tabla.focus(anterior)
+            tabla.selection_set(anterior)
+
+        return "break"
 
     def seleccionar(event=None):
         
@@ -249,25 +300,29 @@ def abrir_busqueda(event=None):
         if not item:
             return
 
-        valores = tabla.item(item, "values")
+        codigo = item
 
-        tabla_venta.insert(
-            "",
-            tk.END,
-            values=(
-                "",
-                valores[0],
-                valores[1],
-                1,
-                valores[1],
-            )
-        )
+        caja.agregar_producto_carrito(codigo)
+        actualizar_tabla(codigo)
 
         ventana_busqueda.destroy()
+        
+        entrada_codigo_venta.focus_set()
     
     tabla.bind("<Return>", seleccionar)
 
-    entrada.focus_set()
+    # ---- BINDS DE BUSQUEDA -----
+    entrada.bind("<KeyRelease>", buscar)
+    entrada.bind("<Down>", bajar_a_tabla)
+
+    tabla.bind("<Down>", mover_abajo_busqueda)
+    tabla.bind("<Up>", mover_arriba_busqueda)
+
+    tabla.bind("<Return>", seleccionar)
+
+    ventana_busqueda.after(100, lambda: entrada.focus_force())
+
+    return "break"
 
 def mover_abajo(event=None):
 

@@ -80,6 +80,24 @@ class Caja:
         with open("productos.json", "w") as archivo:
             json.dump(self.productos, archivo, indent=4)
 
+    def buscar_productos_nombre(self, texto):
+        
+        texto = texto.lower().strip()
+
+        if not texto:
+            return []
+        
+        resultados = []
+
+        for producto in self.productos:
+        
+            nombre = producto.get("nombre", "").lower()
+        
+            if texto in nombre:
+                resultados.append(producto)
+        
+        return resultados
+
     def mostrar_carrito(self):        #	Muestra productos
 
         if not self.carrito:
