@@ -225,13 +225,9 @@ def abrir_busqueda(event=None):
 
         texto = entrada.get()
     
-        print("Texto:", repr(texto))
-
         tabla.delete(*tabla.get_children())
 
         resultados = caja.buscar_productos_nombre(entrada.get())
-        print(len(resultados))   
-
         for producto in resultados:
         
             tabla.insert(
@@ -251,7 +247,6 @@ def abrir_busqueda(event=None):
             tabla.selection_set(items[0])
     
     def bajar_a_tabla(event=None):
-        print("paso a tabla")
         items = tabla.get_children()
 
         if len(items) > 1:
@@ -266,7 +261,6 @@ def abrir_busqueda(event=None):
         return "break"
 
     def mover_abajo_busqueda(event=None):
-        print("abajo busqueda")
         item = tabla.focus()
 
         if not item:

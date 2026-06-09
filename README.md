@@ -32,7 +32,7 @@ Aplicación desarrollada en Python que simula el funcionamiento de una caja regi
 
 ## ▶️ Ejecución
 
-```bash
+Abriendo el cmd/consola desde la ubicacion de la carpeta
+podemos correr el programa con el siguiente comando:
 
-run interface:
-python interfaz.py
+python main.py
