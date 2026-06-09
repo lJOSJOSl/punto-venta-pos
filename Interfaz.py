@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from caja import Caja
+from utilidades import *
 
 # -----------------Objetos globales-----------------
 
@@ -189,6 +190,7 @@ def abrir_busqueda(event=None):
 
     ventana_busqueda = tk.Toplevel(ventana)
     ventana_busqueda.grab_set()
+    centrar_ventana(ventana_busqueda, 700, 500)
     ventana_busqueda.title("Busqueda de Productos")
     ventana_busqueda.geometry("700x500")
 
@@ -311,10 +313,15 @@ def abrir_busqueda(event=None):
     
     tabla.bind("<Return>", seleccionar)
 
+    def cerrar_busqueda(event=None):
+        ventana_busqueda.destroy()
+        entrada_codigo_venta.focus_set()
+        return "break"
+
     # ---- BINDS DE BUSQUEDA -----
     entrada.bind("<KeyRelease>", buscar)
     entrada.bind("<Down>", bajar_a_tabla)
-
+    ventana_busqueda.bind("<Escape>", cerrar_busqueda)
     tabla.bind("<Down>", mover_abajo_busqueda)
     tabla.bind("<Up>", mover_arriba_busqueda)
 
