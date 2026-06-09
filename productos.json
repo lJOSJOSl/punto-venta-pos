@@ -16,5 +16,14 @@
         "precio_venta": 3.0,
         "precio_mayoreo": 0.0,
         "departamento": "Abarrotes"
+    },
+    {
+        "codigo_barras": "3",
+        "nombre": "Vaso suelto #8",
+        "tipo_venta": "unidad",
+        "precio_costo": 0.0,
+        "precio_venta": 1.0,
+        "precio_mayoreo": 0.0,
+        "departamento": "Abarrotes"
     }
 ]

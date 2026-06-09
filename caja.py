@@ -1,4 +1,4 @@
-from producto import Producto
+from producto import *
 from datetime import datetime
 import json
 import os
@@ -7,10 +7,10 @@ class Caja:
 
     def __init__(self):
 
+        self.inventario = self.cargar_productos()
         self.carrito = []
         self.total = 0
         self.ventas = self.cargar_ventas()
-        self.productos = self.cargar_productos()
 
     def cargar_productos(self):
 
@@ -21,26 +21,28 @@ class Caja:
         with open('productos.json', 'r') as f:
                 return json.load(f)
 
-    def agregar_producto_carrito(self, codigo):      # Agrega productos
-
-        for p in self.productos:
-
-            if p["codigo_barras"] == codigo:
-
-                for item in self.carrito:
-
-                    if item.codigo == codigo:
-                        item.cantidad += 1
-                        return item
-
-                nuevo = Producto(p["codigo_barras"], p["nombre"], p["precio_venta"], 1)
+    def guardar_productos(self):
         
+        with open("productos.json", "w") as archivo:
+            json.dump(self.inventario, archivo, indent=4)
+
+    def agregar_al_carrito(self, codigo):
+
+        for producto in self.inventario:
+
+            if producto["codigo_barras"] == codigo:
+            
+                nuevo = ProductoCarrito(
+                    producto["codigo_barras"],
+                    producto["nombre"],
+                    producto["precio_venta"]
+                )
                 self.carrito.append(nuevo)
-        
-                return nuevo
-    
-        return None
-    
+
+                return True
+
+        return False
+ 
     def aumentar_cantidad(self, codigo):
 
         for producto in self.carrito:
@@ -73,12 +75,15 @@ class Caja:
 
         return False
 
-    def agregar_producto_inventario(self, producto):
+    def agregar_producto_inventario(self, codigo, nombre, venta, costo, precio,
+                                    mayoreo, departamento):
 
-        self.productos.append(producto)
+        producto = ProductoInventario(codigo, nombre, venta, float(costo),
+                                      float(precio), float(mayoreo), departamento)
+        
+        self.inventario.append(producto.to_dict())
 
-        with open("productos.json", "w") as archivo:
-            json.dump(self.productos, archivo, indent=4)
+        self.guardar_productos()
 
     def buscar_productos_nombre(self, texto):
         
@@ -89,7 +94,7 @@ class Caja:
         
         resultados = []
 
-        for producto in self.productos:
+        for producto in self.inventario:
         
             nombre = producto.get("nombre", "").lower()
         
@@ -121,7 +126,6 @@ class Caja:
         self.total = sum(p.precio * p.cantidad for p in self.carrito)
         print(f'Total a pagar: ${self.total:.2f}')
         return self.total
-
 
     def venta(self):
         if not self.carrito:

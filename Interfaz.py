@@ -3,8 +3,8 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from caja import Caja
 from utilidades import *
+from caja import Caja
 
 # -----------------Objetos globales-----------------
 
@@ -23,28 +23,23 @@ def agregar_producto():
     mayoreo = entrada_mayoreo.get()
     departamento = combo_departamento.get()
 
-    if nombre == "" or precio == "":
-        print("completa todos los campos")
-        return
     try:
-        producto = {
-            "codigo_barras" : codigo,
-            "nombre" : nombre,
-            "tipo_venta" : venta,
-            "precio_costo" : float(costo),
-            "precio_venta" : float(precio),
-            "precio_mayoreo" : float(mayoreo),
-            "departamento" : departamento
-        }
+        caja.agregar_producto_inventario(
+            codigo,
+            nombre,
+            venta,
+            costo,
+            precio,
+            mayoreo,
+            departamento
+        )
 
-        caja.agregar_producto_inventario(producto)
         busqueda()
         mostrar_ventas()
-    
-        entrada_nombre.delete(0, tk.END)
 
+        entrada_nombre.delete(0, tk.END)
         entrada_precio.delete(0, tk.END)
-     
+
     except ValueError:
         print("El precio debe ser un numero")
 
@@ -53,7 +48,7 @@ def agregar_al_carrito(event=None):
     codigo = entrada_codigo_venta.get().strip()
 
     seleccionar_producto(codigo)  
-    producto = caja.agregar_producto_carrito(codigo)
+    producto = caja.agregar_al_carrito(codigo)
 
     if producto is None:
         entrada_codigo_venta.delete(0, tk.END)
