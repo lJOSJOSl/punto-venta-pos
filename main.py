@@ -1,3 +1,4 @@
-from Interfaz import ventana
+from Interfaz import iniciar_aplicacion
 
-ventana.mainloop()
+if __name__ == "__main__""
+    iniciar_aplicacion()
