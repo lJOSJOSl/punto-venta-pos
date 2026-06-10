@@ -565,101 +565,88 @@ btn_ventas.pack(side="left", padx=10, pady=2)
 
 btn_productos = tk.Button(
     barra_funciones,
-    text="F2 Productos",
+    text="F2 : Productos",
     command=mostrar_productos
 )
 btn_productos.pack(side="left", padx=10, pady=2)
 
-#-----------------pantalla productos-----------------
+#-----------------F2 Productos-----------------
 
 frame_productos = tk.Frame(ventana)
 
-titulo_productos = tk.Label(
-    frame_productos,
-    text="F2 : Productos",
-    font=("Arial", 24)
-)
-titulo_productos.pack(pady=20)
+# ! --- Titulo (Productos) --- !
 
-frame_codigo = tk.Frame(frame_productos)
-frame_codigo.pack(pady=5)
+tk.Label(frame_productos, text="Nuevo producto", font=("Arial", 12)).grid(row=0, column=0, sticky="w", pady=2)
 
-label_codigo = tk.Label(frame_codigo, text= "Codigo de barras")
-label_codigo.pack(side="left", padx=5)
+# ! --- Botones para productos --- !
 
-entrada_codigo = tk.Entry(frame_codigo, width=40)
-entrada_codigo.pack(side="left")
+frame_botones_productos = tk.Frame(frame_productos)
+frame_botones_productos.grid(row=1, column=0, columnspan=2, sticky="w", pady=5)
 
-frame_nombre = tk.Frame(frame_productos)
-frame_nombre.pack(pady=5)
+tk.Button(frame_botones_productos, text="Nuevo").pack(side="left", padx=5)
+tk.Button(frame_botones_productos, text="Modificar").pack(side="left", padx=5)
+tk.Button(frame_botones_productos, text="Eliminar").pack(side="left", padx=5)
 
-label_nombre = tk.Label(frame_nombre, text="Descripción")
-label_nombre.pack(side="left", padx=5)
+# formulario 
 
-entrada_nombre = tk.Entry(frame_nombre, width=40)
-entrada_nombre.pack(side="left")
+frame_formulario = tk.Frame(frame_productos)
+frame_formulario.grid(row=2, column=0, sticky="nw")
 
-frame_tipo = tk.Frame(frame_productos)
-frame_tipo.pack(pady=5)
+frame_formulario.columnconfigure(0, minsize=120)
+frame_formulario.columnconfigure(1, minsize=350)
 
-label_tipo = tk.Label(frame_tipo, text="Se vende")
-label_tipo.pack(side="left")
+tk.Label(frame_formulario, text= "Codigo de barras").grid(row=0, column=0, sticky="e", padx=2)
+entrada_codigo = tk.Entry(frame_formulario, width=40)
+entrada_codigo.grid(row=0, column=1, sticky="w", padx=2)
 
-tipo_venta = tk.StringVar()
+tk.Label(frame_formulario, text="Descripción").grid(row=1, column=0, sticky="e", padx=2)
+entrada_nombre = tk.Entry(frame_formulario, width=60)
+entrada_nombre.grid(row=1, column=1, sticky="w", padx=2)
 
-tipo_venta.set("unidad")
+tk.Label(frame_formulario, text="Se vende").grid(row=2, column=0, sticky="e", padx=2)
 
-radio_unidad = tk.Radiobutton(frame_tipo, text="Por unidad/pza", variable=tipo_venta, value="unidad")
-radio_granel = tk.Radiobutton(frame_tipo, text="A granel(usa decimales)", variable=tipo_venta, value="granel")
-radio_kit = tk.Radiobutton(frame_tipo, text="Como paquete(Kit)", variable=tipo_venta, value="kit")
+frame_tipo_venta = tk.Frame(frame_formulario)
+frame_tipo_venta.grid(row=2, column=1, sticky="w", pady=2)
 
-radio_unidad.pack(side="left")
-radio_granel.pack(side="left")
-radio_kit.pack(side="left")
+tipo_venta = tk.StringVar(value="unidad")
 
-frame_costo = tk.Frame(frame_productos)
-frame_costo.pack(pady=5)
+radio_unidad = tk.Radiobutton(frame_tipo_venta, text="Por unidad/pza", variable=tipo_venta, value="unidad").grid(row=0, column=0, padx=2, sticky="w")
+radio_granel = tk.Radiobutton(frame_tipo_venta, text="A granel(usa decimales)", variable=tipo_venta, value="granel").grid(row=0, column=1, padx=2, sticky="w")
+radio_kit = tk.Radiobutton(frame_tipo_venta, text="Como paquete(Kit)", variable=tipo_venta, value="kit").grid(row=0, column=2, padx=2, sticky="w")
 
-label_costo = tk.Label(frame_costo, text="Precio costo")
-label_costo.pack(side="left", padx=5)
+tk.Label(frame_formulario, text="Precio costo").grid(row=3, column=0, sticky="e", padx=2)
+entrada_costo = tk.Entry(frame_formulario, width=12)
+entrada_costo.grid(row=3, column=1, sticky="w", padx=2)
 
-entrada_costo = tk.Entry(frame_costo, width=5)
-entrada_costo.pack(side="left")
+tk.Label(frame_formulario, text="Precio venta").grid(row=4, column=0, sticky="e", padx=2)
+entrada_precio = tk.Entry(frame_formulario, width=12)
+entrada_precio.grid(row=4, column=1, sticky="w", padx=2)
 
-frame_precio = tk.Frame(frame_productos)
-frame_precio.pack(pady=5)
+tk.Label(frame_formulario, text="Precio mayoreo").grid(row=5, column=0, sticky="e", padx=2)
+entrada_mayoreo = tk.Entry(frame_formulario, width=12)
+entrada_mayoreo.grid(row=5, column=1, sticky="w", padx=2)
 
-label_precio = tk.Label(frame_precio, text="Precio venta")
-label_precio.pack(side="left", padx=5)
+tk.Label(frame_formulario, text="Departamento").grid(row=6, column=0, sticky="e", padx=2)
 
-entrada_precio = tk.Entry(frame_precio, width=5)
-entrada_precio.pack(side="left")
-
-frame_mayoreo = tk.Frame(frame_productos)
-frame_mayoreo.pack(pady=5)
-
-label_mayoreo = tk.Label(frame_mayoreo, text="Precio mayoreo")
-label_mayoreo.pack(side="left", padx=5)
-
-entrada_mayoreo = tk.Entry(frame_mayoreo, width=5)
-entrada_mayoreo.pack(side="left")
-
-frame_departamento = tk.Frame(frame_productos)
-frame_departamento.pack(pady=5)
-
-label_departamento = tk.Label(frame_departamento, text="Departamento")
-label_departamento.pack(side="left")
-
-combo_departamento = ttk.Combobox(frame_departamento, values=["Abarrotes","Bimbo","Lala", "Coca cola"])
+combo_departamento = ttk.Combobox(frame_formulario, values=["Abarrotes","Bimbo","Lala", "Coca cola"])
 combo_departamento.set("Abarrotes")
-combo_departamento.pack(side="left")
+combo_departamento.grid(row=6, column=1, sticky="w", padx=2)
 
-btn_agregar = tk.Button(
-    frame_productos,
-    text= "Agregar producto",
-    command=agregar_producto
-)
-btn_agregar.pack()
+control_inventario = tk.BooleanVar(value=True)
+tk.Label(frame_formulario, text="Inventario").grid(row=7, column=0, sticky="e", padx=2)
+
+check_inventario = tk.Checkbutton(frame_formulario, text="Este producto utiliza inventario", variable=control_inventario)
+check_inventario.grid(row=7, column=1, sticky="w", padx=2)
+
+tk.Label(frame_formulario, text="Cantidad actual").grid(row=8, column=0, sticky="e", padx=5)
+entrada_cantidad_actual = tk.Entry(frame_formulario, width=12)
+entrada_cantidad_actual.grid(row=8, column=1, sticky="w", padx=2)
+
+tk.Label(frame_formulario, text="Minimo").grid(row=9, column=0, sticky="e", padx=2)
+entrada_minimo = tk.Entry(frame_formulario, width=12)
+entrada_minimo.grid(row=9, column=1, sticky="w", padx=2)
+
+tk.Button(frame_formulario, text= "Agregar producto", width=40, command=agregar_producto).grid(row=10, column=0, columnspan=2, padx=5, pady=5)
 
 #teclas
 
