@@ -284,6 +284,18 @@ def abrir_busqueda(event=None):
 
         return "break"
 
+    def seleccionar_primer_item(event=None):
+    
+        items = tabla.get_children()
+
+        if not items:
+            return
+    
+        tabla.selection_set(items[0])
+        tabla.focus(items[0])
+
+        seleccionar()
+
     def seleccionar(event=None):
         
         item = tabla.focus()
@@ -300,8 +312,6 @@ def abrir_busqueda(event=None):
         
         entrada_codigo_venta.focus_set()
     
-    tabla.bind("<Return>", seleccionar)
-
     def cerrar_busqueda(event=None):
         ventana_busqueda.destroy()
         entrada_codigo_venta.focus_set()
@@ -310,12 +320,14 @@ def abrir_busqueda(event=None):
     # ---- BINDS DE BUSQUEDA -----
     entrada.bind("<KeyRelease>", buscar)
     entrada.bind("<Down>", bajar_a_tabla)
+    entrada.bind("<Return>", seleccionar_primer_item)
+
     ventana_busqueda.bind("<Escape>", cerrar_busqueda)
+
     tabla.bind("<Down>", mover_abajo_busqueda)
     tabla.bind("<Up>", mover_arriba_busqueda)
-
     tabla.bind("<Return>", seleccionar)
-
+    tabla.bind("<Double-Button-1>", seleccionar)
     ventana_busqueda.after(100, lambda: entrada.focus_force())
 
     return "break"
