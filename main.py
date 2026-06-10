@@ -1,4 +1,4 @@
-from Interfaz import iniciar_aplicacion
+from Interfaz import ventana
 
-if __name__ == "__main__""
+if __name__ == "__main__":
     iniciar_aplicacion()
