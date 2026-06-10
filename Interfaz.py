@@ -197,19 +197,19 @@ def abrir_busqueda(event=None):
 
 # ---ENCABEZADOS---
 
-    tabla.heading("nombre", text="Producto")
-    tabla.heading("precio_venta", text="Precio")
-    tabla.heading("departamento", text="Departamento")
+    tabla.heading("nombre", text="Descripcion del producto", anchor="w")
+    tabla.heading("precio_venta", text="Precio venta", anchor="e")
+    tabla.heading("departamento", text="Departamento", anchor="w")
 
 # ---Ancho de columnas---
 
-    tabla.column("nombre", width=300)
-    tabla.column("precio_venta", width=100)
-    tabla.column("departamento", width=150)
+    tabla.column("nombre", width=450, anchor="w", stretch=False)
+    tabla.column("precio_venta", width=100, anchor="e", stretch=False)
+    tabla.column("departamento", width=100, anchor="w", stretch=False)
    
     entrada = tk.Entry(
         ventana_busqueda,
-        font=("Arial", 16),
+        font=("Arial", 20),
         width=40
     )
 
@@ -231,7 +231,7 @@ def abrir_busqueda(event=None):
                      iid=producto["codigo_barras"],
                      values=(
                          producto["nombre"],
-                         producto["precio_venta"],
+                         f"${float(producto['precio_venta']):.2f}",
                          producto["departamento"]
                      )
                 )
