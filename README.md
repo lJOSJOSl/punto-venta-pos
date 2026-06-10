@@ -7,17 +7,22 @@ Aplicación desarrollada con Python para el funcionamiento de una caja registrad
 - Agregar productos al carrito      (✔)
 - Carrito de compras                (✔)
 - Cálculo automático de total       (✔)  
-- Generación de ticket              (  )
+- Generación de ticket              (❌)
 - Almacenamiento de ventas en JSON  (✔)
-- Historial de ventas               (  )
+- Historial de ventas               (❌)
+- Corte                             (❌)
+- Usuarios                          (❌)
+- Catalogo (Inventario)             (📌)
 
 ## 🧱 Estructura
 
-- main.py → Ejecuta el programa
-- caja.py → Lógica principal del sistema
+- main.py → Ejecuta el programa (arranque)
+- caja.py → Lógica principal del sistema funciones para agregar producto
+- Interfaz.py → Gui del sistema
 - producto.py → Clases para productos en inventario y productos para el carrito
 - productos.json → Catálogo (almacenamiento de los productos)
 - ventas.json → Historial de ventas
+- utilidades.py → Funciones reutilizables
 
 ## 📸 Capturas del sistema
 
