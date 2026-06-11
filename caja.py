@@ -63,13 +63,10 @@ class Caja:
 
     def eliminar_producto(self, codigo):
 
-        print("Buscando:", codigo)
         for item in self.carrito:
-            print("Producto:", item.codigo)
-
-            if item.codigo == codigo:
-                print("Encontrado")
             
+            if item.codigo == codigo:
+                            
                 self.carrito.remove(item)
                 return True
 
@@ -84,6 +81,10 @@ class Caja:
         self.inventario.append(producto.to_dict())
 
         self.guardar_productos()
+
+    def cantidad_articulos(self):
+    
+        return sum(producto.cantidad for producto in self.carrito)
 
     def buscar_productos_nombre(self, texto):
         
@@ -108,7 +109,6 @@ class Caja:
         if not self.carrito:
             print("Carrito vacio")
             return
-        self.calcular_total()
         
         print("\nCarrito:")
         print("No.\tProducto\tPrecio\tCantidad\tTotal")

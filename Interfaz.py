@@ -100,6 +100,7 @@ def actualizar_tabla(codigo_seleccionado=None):
     total = caja.calcular_total()
     label_total.config(text=f"${total:,.2f}")
     label_total_grande.config(text=f"${total:,.2f}")
+    label_articulos.config(text=f"{caja.cantidad_articulos()} Articulos en la venta actual")
 
 def aumentar_cantidad(event=None):
 
@@ -379,14 +380,13 @@ def mover_arriba(event=None):
 
     return "break"
 
-
-
 def actualizar_inventario():
 
     estado = "normal" if control_inventario.get() else "disabled"
 
     entrada_cantidad_actual.config(state=estado)
     entrada_minimo.config(state=estado)
+
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---
