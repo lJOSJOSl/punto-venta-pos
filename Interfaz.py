@@ -81,7 +81,7 @@ def actualizar_tabla(codigo_seleccionado=None):
         
         importe = producto.precio * producto.cantidad
         
-        tabla_venta.insert(
+        item = tabla_venta.insert(
              "",
              "end",
              values=(
@@ -92,6 +92,10 @@ def actualizar_tabla(codigo_seleccionado=None):
                  f"${importe:.2f}",
               )
            )
+        if codigo_seleccionado:
+            seleccionar_producto(codigo_seleccionado)
+            tabla_venta.selection_set(item)
+            tabla_venta.focus(item)
 
     total = caja.calcular_total()
     label_total.config(text=f"${total:,.2f}")
