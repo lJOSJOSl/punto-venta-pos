@@ -170,6 +170,19 @@ def seleccionar_producto(codigo):
             tabla_venta.see(item)
             break
 
+def cobro():
+
+    venta = caja.cobrar()
+
+    if venta is None:
+
+        messagebox.showwarning("Venta", "No hay productos en el carrito")
+        return
+
+    actualizar_tabla()
+
+    messagebox.showinfo("Venta realizada", f"Total: ${venta.total:,.2f}")
+
 def mostrar_ventas(event=None):
 
     frame_productos.grid_forget()
@@ -537,7 +550,7 @@ label_articulos.pack(side="left", padx=20)
 label_total_grande = tk.Label(frame_total, text="$0.00", font=("Arial", 22, "bold"))
 label_total_grande.pack(side="right", padx=10, pady=2)
 
-btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", font=("Arial", 14, "bold"))
+btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", command = cobro, font=("Arial", 14, "bold"))
 btn_cobrar.pack(side="right", padx=10, pady=2)
 
 # !--- Frame pago ---!

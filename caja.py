@@ -1,5 +1,7 @@
-from producto import *
+from producto import ProductoInventario
+from producto import ProductoCarrito
 from datetime import datetime
+from venta import Venta
 import json
 import os
 
@@ -127,10 +129,25 @@ class Caja:
         print(f'Total a pagar: ${self.total:.2f}')
         return self.total
 
-    def venta(self):
+    def cobrar(self):
+
         if not self.carrito:
-            print("Carrito vacío")
-            return
+            return None
+    
+        venta = Venta(fecha=datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
+                productos = self.carrito.copy(),
+                total = self.calcular_total()
+               )
+     
+        self.ventas.append(venta.to_dict())
+
+        with open("ventas.json", "w") as f:
+            json.dump(self.ventas, f, indent=4)
+
+        self.carrito.clear()
+
+        return venta
+         
 
         self.calcular_total()
 
@@ -192,16 +209,10 @@ class Caja:
 
     def guardar_venta(self):
 
-        venta = {
-            'fecha' : datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
-            'productos' : [
-                {'nombre' : p.nombre, 'precio' : p.precio, 'cantidad' : p.cantidad} 
-                for p in self.carrito
-            ],
-            'total' : self.total
-        }
+        venta = Venta(fecha=datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
+            productos = self.carrito.copy(), total=self.total)
 
-        self.ventas.append(venta)
+        self.ventas.append(venta.to_dict())
 
         with open('ventas.json', 'w') as f:
             json.dump(self.ventas, f, indent=4)
