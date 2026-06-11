@@ -77,12 +77,9 @@ def actualizar_tabla(codigo_seleccionado=None):
 
     tabla_venta.delete(*tabla_venta.get_children())
 
-    total = 0
- 
     for producto in caja.carrito:
         
         importe = producto.precio * producto.cantidad
-        total += importe
         
         tabla_venta.insert(
              "",
@@ -96,22 +93,8 @@ def actualizar_tabla(codigo_seleccionado=None):
               )
            )
 
-    if codigo_seleccionado:
-    
-        seleccionar_producto(codigo_seleccionado)
-
-    elif tabla_venta.get_children():
-        primer_item = tabla_venta.get_children()[0]
-
-        tabla_venta.selection_set(primer_item)
-        tabla_venta.focus(primer_item)    
-
+    total = caja.calcular_total()
     label_total.config(text=f"${total:,.2f}")
-
-    cantidad_articulos = sum(producto.cantidad for producto in caja.carrito)
-
-    label_articulos.config(text=f"{cantidad_articulos} Articulos en la venta actual")
-
     label_total_grande.config(text=f"${total:,.2f}")
 
 def aumentar_cantidad(event=None):
