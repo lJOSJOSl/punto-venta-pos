@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from utilidades import *
+from utilidades import centrar_ventana
 from caja import Caja
 
 # -----------------Objetos globales-----------------
@@ -400,6 +400,49 @@ def actualizar_inventario():
     entrada_cantidad_actual.config(state=estado)
     entrada_minimo.config(state=estado)
 
+def abrir_cobro(event=None):
+
+    ventana_cobro = tk.Toplevel(ventana)
+    ventana_cobro.grab_set()
+    centrar_ventana(ventana_cobro, 600, 500)
+    ventana_cobro.title("Venta de productos : Cobro")
+    ventana_cobro.geometry("600x500")
+
+    def cobrar(event=None):
+        pass    
+
+    def cerrar_cobro(event=None):
+
+        ventana_cobro.destroy()
+        entrada_codigo_venta.focus_set()
+
+        return "break"
+
+    
+# --- ventana de cobro ---
+
+    tk.Label(ventana_cobro, text="Cobrar", font=("Arial", 18, "bold")).grid(row=0, columnspan=2, sticky="nsew")    
+    tk.Label(ventana_cobro, text="Total a cobrar", font=("Arial", 18, "bold")).grid(row=1, columnspan=2, sticky ="nsew")
+
+    label_total = tk.Label(ventana_cobro, text=f"${caja.calcular_total():.2f}", font=("Arial", 30, "bold"))
+    label_total.grid(row=1, column=0, sticky="nsew")
+    
+    tk.Label(ventana_cobro, text="Metodo de pago: ", font=("Arial", 14)).grid(row=2, columnspan=2, sticky="nsew")
+    tk.Label(ventana_cobro, text="Efectivo", font=("Arial", 16, "bold")).grid(row=3, columnspan=2, sticky="nsew")
+
+    tk.Label(ventana_cobro, text="Pago con:", font=("Arial", 14)).grid(row=4, column=0, sticky="e")
+    entrada_pago = tk.Entry(ventana_cobro, font=("Arial", 16), width=10)
+    entrada_pago.grid(row=4, column=1, sticky="w")
+
+    label_cambio = tk.Label(ventana_cobro, text="Cambio: $0.00", font=("Arial", 18))
+    label_cambio.grid(row=5, column=0, sticky="e")
+
+    tk.Button(ventana_cobro, text="F1 cobrar y registrar venta", command=cobrar).grid(row=0, column=2)
+    tk.Button(ventana_cobro, text="ESC - Cancelar").grid(row=1, column=2)
+
+#BINDS DE COBRO
+    ventana_cobro.bind("<Escape>", cerrar_cobro)
+    ventana_cob.bind("<F1>", cobrar)
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---
@@ -553,7 +596,7 @@ label_total_grande.pack(side="right", padx=10, pady=2)
 btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", command = cobro, font=("Arial", 14, "bold"))
 btn_cobrar.pack(side="right", padx=10, pady=2)
 
-# !--- Frame pago ---!
+# !--- Frame info del pago ---!
 
 frame_pago = tk.Frame(frame_ventas)
 frame_pago.grid(row=5, column=0, sticky="ew")
@@ -694,10 +737,8 @@ ventana.bind("<F2>", mostrar_productos)
 ventana.bind("<F10>", abrir_busqueda)
 ventana.bind("<Up>", mover_arriba)
 ventana.bind("<Down>", mover_abajo)
-
+ventana.bind("<F12>", abrir_cobro)
 entrada_codigo_venta.focus_set()
-
-
 
 #Mainloop
 ventana.mainloop()
