@@ -147,6 +147,7 @@ class Caja:
             json.dump(self.ventas, f, indent=4)
 
         self.carrito.clear()
+        self.total = 0
 
         return venta
          
@@ -155,7 +156,7 @@ class Caja:
         if not self.ventas:
             return 1
 
-        retun self.ventas[-1].folio + 1
+        return max(v["folio"] for v in self.ventas) + 1
 
     def mostrar_catalogo(self):
 
@@ -189,15 +190,6 @@ class Caja:
         except FileNotFoundError:
             return []
 
-    def guardar_venta(self):
-
-        venta = Venta(fecha=datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
-            productos = self.carrito.copy(), total=self.total)
-
-        self.ventas.append(venta.to_dict())
-
-        with open('ventas.json', 'w') as f:
-            json.dump(self.ventas, f, indent=4)
     
     def mostrar_ventas(self):
 
