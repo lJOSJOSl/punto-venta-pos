@@ -170,19 +170,6 @@ def seleccionar_producto(codigo):
             tabla_venta.see(item)
             break
 
-def cobro():
-
-    venta = caja.cobrar()
-
-    if venta is None:
-
-        messagebox.showwarning("Venta", "No hay productos en el carrito")
-        return
-
-    actualizar_tabla()
-
-    messagebox.showinfo("Venta realizada", f"Total: ${venta.total:,.2f}")
-
 def mostrar_ventas(event=None):
 
     frame_productos.grid_forget()
@@ -408,8 +395,18 @@ def abrir_cobro(event=None):
     ventana_cobro.title("Venta de productos : Cobro")
     ventana_cobro.geometry("600x500")
 
-    def cobrar(event=None):
-        pass    
+    def cobro(event=None):
+
+        venta = caja.cobrar()
+
+        if venta is None:
+
+            messagebox.showwarning("Venta", "No hay productos en el carrito")
+            return
+
+        actualizar_tabla()
+
+        messagebox.showinfo("Venta realizada", f"Total: ${venta:,.2f}")
 
     def cerrar_cobro(event=None):
 
@@ -418,7 +415,6 @@ def abrir_cobro(event=None):
 
         return "break"
 
-    
 # --- ventana de cobro ---
 
     tk.Label(ventana_cobro, text="Cobrar", font=("Arial", 18, "bold")).grid(row=0, columnspan=2, sticky="nsew")    
@@ -437,12 +433,12 @@ def abrir_cobro(event=None):
     label_cambio = tk.Label(ventana_cobro, text="Cambio: $0.00", font=("Arial", 18))
     label_cambio.grid(row=5, column=0, sticky="e")
 
-    tk.Button(ventana_cobro, text="F1 cobrar y registrar venta", command=cobrar).grid(row=0, column=2)
+    tk.Button(ventana_cobro, text="F1 cobrar y registrar venta", command=cobro).grid(row=0, column=2)
     tk.Button(ventana_cobro, text="ESC - Cancelar").grid(row=1, column=2)
 
 #BINDS DE COBRO
     ventana_cobro.bind("<Escape>", cerrar_cobro)
-    ventana_cob.bind("<F1>", cobrar)
+    ventana_cobro.bind("<F1>", cobro)
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---
@@ -593,7 +589,7 @@ label_articulos.pack(side="left", padx=20)
 label_total_grande = tk.Label(frame_total, text="$0.00", font=("Arial", 22, "bold"))
 label_total_grande.pack(side="right", padx=10, pady=2)
 
-btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", command = cobro, font=("Arial", 14, "bold"))
+btn_cobrar = tk.Button(frame_total, text="F12 Cobrar", command = abrir_cobro, font=("Arial", 14, "bold"))
 btn_cobrar.pack(side="right", padx=10, pady=2)
 
 # !--- Frame info del pago ---!
