@@ -35,3 +35,12 @@ class ProductoCarrito:
     def subtotal(self):
  
         return self.precio * self.cantidad
+
+    def to_dict(self):
+
+        return{
+           "codigo" : self.codigo,
+           "nombre" : self.nombre,
+           "precio" : self.precio,
+           "cantidad" : self.cantidad
+              }

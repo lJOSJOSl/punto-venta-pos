@@ -399,6 +399,8 @@ def abrir_cobro(event=None):
     def cobro(event=None):
 
         venta = caja.cobrar()
+        
+        ventana_cobro.destroy()
 
         if venta is None:
 
@@ -406,8 +408,6 @@ def abrir_cobro(event=None):
             return
 
         actualizar_tabla()
-
-        messagebox.showinfo("Venta realizada", f"Total: ${venta:,.2f}")
 
     def cerrar_cobro(event=None):
 
