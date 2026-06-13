@@ -394,6 +394,7 @@ def abrir_cobro(event=None):
     centrar_ventana(ventana_cobro, 600, 500)
     ventana_cobro.title("Venta de productos : Cobro")
     ventana_cobro.geometry("600x500")
+    ventana_cobro.after(100, lambda: entrada_pago.focus_force())
 
     def cobro(event=None):
 
@@ -417,28 +418,46 @@ def abrir_cobro(event=None):
 
 # --- ventana de cobro ---
 
-    tk.Label(ventana_cobro, text="Cobrar", font=("Arial", 18, "bold")).grid(row=0, columnspan=2, sticky="nsew")    
-    tk.Label(ventana_cobro, text="Total a cobrar", font=("Arial", 18, "bold")).grid(row=1, columnspan=2, sticky ="nsew")
+    frame_cobro = tk.Frame(ventana_cobro, padx=20, pady=20)
+    frame_cobro.pack(fill="both", expand=True, padx=10, pady=10)
 
-    label_total = tk.Label(ventana_cobro, text=f"${caja.calcular_total():.2f}", font=("Arial", 30, "bold"))
-    label_total.grid(row=1, column=0, sticky="nsew")
+    frame_cobro.columnconfigure(0, weight=3)
+    frame_cobro.columnconfigure(1, weight=0)
+    frame_cobro.columnconfigure(2, weight=1)
+
+    frame_pago = tk.Frame(frame_cobro)
+    frame_pago.grid(row=0, column=0, sticky="nsew", padx=(0, 20))
+
+    tk.Label(frame_pago, text="Cobrar", font=("Arial", 18, "bold")).grid(row=0, column=0, pady=(0, 20))
+    tk.Label(frame_pago, text="Total a cobrar", font=("Arial", 16, "bold")).grid(row=1, column=0)
+    label_total = tk.Label(frame_pago, text=f"${caja.calcular_total():.2f}", font=("Arial", 30, "bold"))
+    label_total.grid(row=2, column=0, pady=(0, 20))
+
+    tk.Label(frame_pago, text="Metodo de pago: ", font=("Arial", 14)).grid(row=3, column=0, sticky="w")
+    tk.Label(frame_pago, text="Efectivo", font=("Arial", 16, "bold")).grid(row=4, column=0, sticky="w")
+
+    tk.Label(frame_pago, text="Pago con:", font=("Arial", 14)).grid(row=5, column=0, sticky="w")
+
+    entrada_pago = tk.Entry(frame_pago, font=("Arial", 16), width=10)
+    entrada_pago.grid(row=6, column=0, sticky="w")
+
+    tk.Label(frame_pago, text="Cambio:", font=("Arial", 14)).grid(row=7, column=0, sticky="w", pady=(20, 0))
+    label_cambio = tk.Label(frame_pago, text="$0.00", font=("Arial", 24, "bold"))
+    label_cambio.grid(row=8, column=0, sticky="w")
+
+    ttk.Separator(frame_cobro, orient="vertical").grid(row=0, column=1, sticky="ns")
     
-    tk.Label(ventana_cobro, text="Metodo de pago: ", font=("Arial", 14)).grid(row=2, columnspan=2, sticky="nsew")
-    tk.Label(ventana_cobro, text="Efectivo", font=("Arial", 16, "bold")).grid(row=3, columnspan=2, sticky="nsew")
+    frame_acciones = tk.Frame(frame_cobro)
+    frame_acciones.grid(row=0, column=2, sticky="n")
 
-    tk.Label(ventana_cobro, text="Pago con:", font=("Arial", 14)).grid(row=4, column=0, sticky="e")
-    entrada_pago = tk.Entry(ventana_cobro, font=("Arial", 16), width=10)
-    entrada_pago.grid(row=4, column=1, sticky="w")
-
-    label_cambio = tk.Label(ventana_cobro, text="Cambio: $0.00", font=("Arial", 18))
-    label_cambio.grid(row=5, column=0, sticky="e")
-
-    tk.Button(ventana_cobro, text="F1 cobrar y registrar venta", command=cobro).grid(row=0, column=2)
-    tk.Button(ventana_cobro, text="ESC - Cancelar").grid(row=1, column=2)
+    tk.Button(frame_acciones, text="F1 cobrar y registrar venta", command=cobro).pack(pady=5)
+    tk.Button(frame_acciones, text="ESC - Cancelar", command=cerrar_cobro, width=20, height=3).pack(pady=5)
 
 #BINDS DE COBRO
     ventana_cobro.bind("<Escape>", cerrar_cobro)
     ventana_cobro.bind("<F1>", cobro)
+
+    entrada_pago.focus_set()
 #-----------------Ventanas-----------------
 
 # ---VENTANA PRINCIPAL---

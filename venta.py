@@ -3,9 +3,9 @@ class Venta:
     def __init__(self, folio, fecha, productos, total):
 
         self.folio = folio
-        self.folio = fecha
-        self.folio = productos
-        self.folio = total
+        self.fecha = fecha
+        self.productos = productos
+        self.total = total
 
     def to_dict(self):
         

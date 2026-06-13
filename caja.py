@@ -134,7 +134,9 @@ class Caja:
         if not self.carrito:
             return None
     
-        venta = Venta(fecha=datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
+        venta = Venta(
+                folio=self.obtener_siguiente_folio(),
+                fecha=datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
                 productos = self.carrito.copy(),
                 total = self.calcular_total()
                )
@@ -148,7 +150,6 @@ class Caja:
 
         return venta
          
-
         self.calcular_total()
 
         try:
@@ -174,6 +175,14 @@ class Caja:
         else:
 
             print("Venta cancelada")
+
+
+    def obtener_siguiente_folio(self):
+        
+        if not self.ventas:
+            return 1
+
+        retun self.ventas[-1].folio + 1
 
     def mostrar_catalogo(self):
 
