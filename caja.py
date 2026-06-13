@@ -150,33 +150,6 @@ class Caja:
 
         return venta
          
-        self.calcular_total()
-
-        try:
-            monto = float(input("Dinero recibido: "))
-        except ValueError:
-            print("Monto inválido")
-            return
-
-        if monto < self.total:
-            print(f"Dinero insuficiente")
-            return
-        cambio = monto - self.total
-        print(f'Cambio: ${cambio:.2f}')
-
-        confirmar = input("¿Confirmar venta? (s/n): ")
-
-        if confirmar.lower() == 's':
-
-            self.guardar_venta()
-            self.imprimir_ticket(monto,cambio)
-            print("Venta guardada")
-            self.carrito.clear()
-        else:
-
-            print("Venta cancelada")
-
-
     def obtener_siguiente_folio(self):
         
         if not self.ventas:
