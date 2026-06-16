@@ -428,22 +428,20 @@ def abrir_cobro(event=None):
     frame_pago.grid(row=0, column=0, sticky="nsew")
     frame_pago.columnconfigure(0, weight=1)
 
-    tk.Label(frame_pago, text="Cobrar", font=("Arial", 18, "bold")).grid(row=0, column=0, pady=(0, 20))
     tk.Label(frame_pago, text="Total a cobrar", font=("Arial", 16, "bold")).grid(row=1, column=0)
     label_total = tk.Label(frame_pago, text=f"${caja.calcular_total():.2f}", font=("Arial", 30, "bold"))
     label_total.grid(row=2, column=0, pady=(0, 20))
 
-    tk.Label(frame_pago, text="Metodo de pago: ", font=("Arial", 14)).grid(row=3, column=0, sticky="w")
-    tk.Label(frame_pago, text="Efectivo", font=("Arial", 16, "bold")).grid(row=4, column=0, sticky="w")
+    tk.Label(frame_pago, text="Metodo de pago: ", font=("Arial", 14)).grid(row=3, column=0)
+    tk.Label(frame_pago, text="Efectivo", font=("Arial", 16, "bold")).grid(row=4, column=0, pady=(10,10))
 
-    tk.Label(frame_pago, text="Pago con:", font=("Arial", 14)).grid(row=5, column=0, sticky="w")
+    tk.Label(frame_pago, text="Pago con:", font=("Arial", 18, "bold")).grid(row=5, column=0, sticky="w", pady=(10, 0))
+    entrada_pago = tk.Entry(frame_pago, font=("Arial", 22), width=5)
+    entrada_pago.grid(row=5, column=0, pady=(10,0), padx=(20, 0))
 
-    entrada_pago = tk.Entry(frame_pago, font=("Arial", 16), width=6)
-    entrada_pago.grid(row=5, column=0,)
-
-    tk.Label(frame_pago, text="Cambio:", font=("Arial", 14)).grid(row=6, column=0, sticky="w", pady=(20, 0))
+    tk.Label(frame_pago, text="Cambio:", font=("Arial", 24)).grid(row=6, column=0, sticky="w", pady=(20, 0))
     label_cambio = tk.Label(frame_pago, text="$0.00", font=("Arial", 24, "bold"))
-    label_cambio.grid(row=6, column=0, pady=6)
+    label_cambio.grid(row=6, column=0, pady=(20, 0), padx=(10, 0))
 
     ttk.Separator(frame_cobro, orient="vertical").grid(row=0, column=1, sticky="ns")
     
