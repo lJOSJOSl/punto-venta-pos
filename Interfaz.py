@@ -394,7 +394,6 @@ def abrir_cobro(event=None):
     centrar_ventana(ventana_cobro, 600, 500)
     ventana_cobro.title("Venta de productos : Cobro")
     ventana_cobro.geometry("600x500")
-    ventana_cobro.after(100, lambda: entrada_pago.focus_force())
 
     def cobro(event=None):
 
@@ -440,7 +439,7 @@ def abrir_cobro(event=None):
     entrada_pago.grid(row=5, column=0, pady=(10,0), padx=(20, 0))
 
     tk.Label(frame_pago, text="Cambio:", font=("Arial", 24)).grid(row=6, column=0, sticky="w", pady=(20, 0))
-    label_cambio = tk.Label(frame_pago, text="$0.00", font=("Arial", 24, "bold"))
+    label_cambio = tk.Label(frame_pago, text="0.00", font=("Arial", 24, "bold"))
     label_cambio.grid(row=6, column=0, pady=(20, 0), padx=(10, 0))
 
     ttk.Separator(frame_cobro, orient="vertical").grid(row=0, column=1, sticky="ns")
@@ -451,9 +450,19 @@ def abrir_cobro(event=None):
     tk.Button(frame_acciones, text="F1 cobrar y registrar venta", command=cobro).pack(pady=5)
     tk.Button(frame_acciones, text="ESC - Cancelar", command=cerrar_cobro, width=20, height=3).pack(pady=5)
 
+    entrada_pago.focus_set()
+    entrada_pago.select_range(0, "end")
+    ventana_cobro.after(100, 
+        lambda: (
+            entrada_pago.focus_force(),
+            entrada_pago.select_range(0, "end")
+                 )
+        )
+                          
+
 #Valores iniciales
-    
-    entrada_pago.insert(0, "0.00")
+  
+    entrada_pago.insert(0, "00.00")
 
 #BINDS DE COBRO
     ventana_cobro.bind("<Escape>", cerrar_cobro)
