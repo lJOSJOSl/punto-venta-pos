@@ -387,6 +387,30 @@ def actualizar_inventario():
     entrada_cantidad_actual.config(state=estado)
     entrada_minimo.config(state=estado)
 
+def actualizar_cambio(entrada_pago, label_cambio, event=None):
+
+    try:
+        pago = float(entrada_pago.get())
+        
+        if pago <=0:
+
+            label_cambio.config(text="$0.00")
+            return        
+
+        cambio = caja.clcular_cambio(pago)
+
+        if cambio <0:
+
+            label_cambio.config(text="$0.00")
+
+        else:
+
+            label_cambio.config(text=f"${cambio:.2f}")
+
+    except ValueError:
+
+            label_cambio.config(text="$0.00")
+
 def abrir_cobro(event=None):
 
     ventana_cobro = tk.Toplevel(ventana)
@@ -396,14 +420,28 @@ def abrir_cobro(event=None):
     ventana_cobro.geometry("600x500")
 
     def cobro(event=None):
+        
+        try:
 
+            pago = float(entrada_pago.get())
+
+        except ValueError:
+
+            messagebox.showwarning("Pago", "Ingrese una cantidad valida")
+            return
+
+        if not caja.pago_suficiente(pago):
+
+            messagebox.showwarning("Pago insuficiente", "El monto recibido es  menor al total")
+            return
+      
         venta = caja.cobrar()
         
         if venta is None:
 
             messagebox.showwarning("Venta", "No hay productos en el carrito")
             return
-
+  
         ventana_cobro.destroy()
         actualizar_tabla()
 
@@ -467,8 +505,10 @@ def abrir_cobro(event=None):
 #BINDS DE COBRO
     ventana_cobro.bind("<Escape>", cerrar_cobro)
     ventana_cobro.bind("<F1>", cobro)
-
     entrada_pago.focus_set()
+    entrada_pago.bind("<KeyRelease>", lambda event: actualizar_cambio(entrada_pago, label_cambio, event))
+
+
 
 #-----------------Ventanas-----------------
 

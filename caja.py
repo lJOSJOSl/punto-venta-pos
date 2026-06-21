@@ -151,12 +151,13 @@ class Caja:
 
         return venta
          
-    def calcular_cambio(event=None):
+    def calcular_cambio(self, pago):
     
-        try:
-            return float(pago) - self.calcular_total()
-        except ValueError
-            return 0
+        return float(pago) - self.calcular_total()
+        
+    def pago_suficiente(self, pago):
+
+        return pago >= self.calcular_total()	
 
     def obtener_siguiente_folio(self):
         

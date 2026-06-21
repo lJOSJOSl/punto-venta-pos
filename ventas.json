@@ -93,5 +93,18 @@
                 "cantidad": 1
             }
         ]
+    },
+    {
+        "folio": 6,
+        "fecha": "2026/06/21 06:45:45",
+        "total": 6.0,
+        "productos": [
+            {
+                "codigo": "1",
+                "nombre": "pan de dulce",
+                "precio": 6.0,
+                "cantidad": 1
+            }
+        ]
     }
 ]
