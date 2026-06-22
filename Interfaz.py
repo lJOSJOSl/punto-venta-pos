@@ -397,7 +397,7 @@ def actualizar_cambio(entrada_pago, label_cambio, event=None):
             label_cambio.config(text="$0.00")
             return        
 
-        cambio = caja.clcular_cambio(pago)
+        cambio = caja.calcular_cambio(pago)
 
         if cambio <0:
 
@@ -507,8 +507,6 @@ def abrir_cobro(event=None):
     ventana_cobro.bind("<F1>", cobro)
     entrada_pago.focus_set()
     entrada_pago.bind("<KeyRelease>", lambda event: actualizar_cambio(entrada_pago, label_cambio, event))
-
-
 
 #-----------------Ventanas-----------------
 

@@ -29,6 +29,13 @@ class Caja:
             json.dump(self.inventario, archivo, indent=4)
 
     def agregar_al_carrito(self, codigo):
+        
+        for producto_carrito in self.carrito:
+        
+            if producto_carrito.codigo_barras == codigo:
+
+                producto_carrito.cantidad += 1
+                return True
 
         for producto in self.inventario:
 
